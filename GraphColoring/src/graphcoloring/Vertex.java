@@ -5,18 +5,31 @@
  */
 package graphcoloring;
 
-/**
- *
- * @author q46p749
- */
+import java.awt.*;
+import java.awt.geom.*;
+import java.util.*;
+
+
 public class Vertex {
-    private int x,y;
-    public Vertex(int x, int y){
-        this.x = x;
-        this.y = y;
-       
+    final Point2D point; 
+    final ArrayList<Point2D> neighbors = new ArrayList<>();
+    Graphics2D color;
+    
+    public Vertex(Point2D current, Graphics2D color){
+        this.point = current; 
+        this.color = color;
     }
-    public int getVertex(){
-        return x;
+    public void addNeighbor(Point2D n){
+        this.neighbors.add(n);
     }
+    
+    public ArrayList<Point2D> getNeighbors() {
+        return this.neighbors; 
+    }
+    
+    public Point2D getPoint() {
+        
+        return this.point;
+    }
+    
 }
