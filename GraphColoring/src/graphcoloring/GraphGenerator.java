@@ -5,16 +5,9 @@
  */
 package graphcoloring;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Shape;
-import java.awt.geom.Line2D;
-import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.Random;
+import java.awt.*;
+import java.awt.geom.*;
+import java.util.*;
 import javax.swing.JPanel;
 
 /**
@@ -34,27 +27,43 @@ public class GraphGenerator extends JPanel {
     
     g2d.setColor(Color.BLUE);
    
-    for (int i = 0; i < 5; i++) { 
+    for (int i = 0; i <10; i++) { 
       Dimension size = getSize();
       int w = size.width ;
       int h = size.height;
-        System.out.println(i);
       Random r = new Random();
       int x = Math.abs(r.nextInt()) % w;
       int y = Math.abs(r.nextInt()) % h;
      
       Point2D p = new Point2D.Double((double)x,(double)y);
-      //Point2D p2 = new Point2D.Double((double)y,(double)x);
       neighbors.add(p);
       
-       // System.out.println(neighbors.get(i));
-        
-      g2d.setStroke(new BasicStroke(3));
-      g2d.draw(new Line2D.Double(p, p));
+      connectLines(g2d, neighbors);
+      
+      
       
     }
     
   }
 
-
+ public void connectLines(Graphics2D g2d, ArrayList<Point2D> neighbors){
+      
+     
+     for(int i = 0; i < neighbors.size(); i++){
+      double min = 999;
+      Point2D point = new Point2D.Double(); 
+       for(int j = 0; j < neighbors.size(); j++ ){
+           double distance = neighbors.get(i).distance(neighbors.get(j).getX(),neighbors.get(j).getY());
+           if(distance != 0 && distance < min){
+               min = distance;
+               point = neighbors.get(j);
+           }
+       }
+      g2d.setStroke(new BasicStroke(3));
+      g2d.draw(new Line2D.Double(neighbors.get(i), point));
+      
+     }
+ 
+    }
+    
 }
