@@ -25,7 +25,7 @@ public class GraphGenerator extends JPanel {
         ArrayList<Line2D> edges = new ArrayList<>();
         Graphics2D g2d = (Graphics2D) g;
         Color color;
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 3; i++) {
             Dimension size = getSize();
             int w = size.width;
             int h = size.height;
@@ -70,7 +70,7 @@ public class GraphGenerator extends JPanel {
                 }
             }
             // Color the graph based of the Vertex's color
-            g2d.setStroke(new BasicStroke(6));
+            g2d.setStroke(new BasicStroke(2));
             if (point.getX() > 0) {
                 g2d.setColor(neighbors.get(i).getColor());
                 g2d.draw(new Line2D.Double(neighbors.get(i).getPoint(), neighbors.get(i).getPoint()));
@@ -105,7 +105,7 @@ public class GraphGenerator extends JPanel {
                 if (!intersect(edges, new Line2D.Double(neighbors.get(i).getPoint(), neighbors.get(j).getPoint()))) {
                     point = neighbors.get(j).getPoint();
                     vertIndex = j;
-                    g2d.setStroke(new BasicStroke(6));
+                    g2d.setStroke(new BasicStroke(2));
                     if (point.getX() > 0) {
                         g2d.setColor(neighbors.get(i).getColor());
                         g2d.draw(new Line2D.Double(neighbors.get(i).getPoint(), neighbors.get(i).getPoint()));
