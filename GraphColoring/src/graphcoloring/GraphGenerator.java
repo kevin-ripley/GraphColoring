@@ -25,7 +25,7 @@ public class GraphGenerator extends JPanel {
         ArrayList<Line2D> edges = new ArrayList<>();
         Graphics2D g2d = (Graphics2D) g;
         Color color;
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 20; i++) {
             Dimension size = getSize();
             int w = size.width;
             int h = size.height;
@@ -47,7 +47,7 @@ public class GraphGenerator extends JPanel {
 
         }
         edges = connectLines(g2d, allPoints);
-        
+
         // printNeighbors(allPoints);
     }
 
@@ -60,12 +60,12 @@ public class GraphGenerator extends JPanel {
             for (int j = i; j < neighbors.size(); j++) {
                 double distance = neighbors.get(i).getPoint().distance(neighbors.get(j).getPoint().getX(), neighbors.get(j).getPoint().getY());
                 if (distance != 0 && distance < min) {
-                  // if (intersect(edges,new Line2D.Double(neighbors.get(i).getPoint(), neighbors.get(j).getPoint()))) {
+                    if (!intersect(edges, new Line2D.Double(neighbors.get(i).getPoint(), neighbors.get(j).getPoint()))) {
                         min = distance;
                         point = neighbors.get(j).getPoint();
                         vertIndex = j;
-                   }
-               // }
+                    }
+                }
             }
             g2d.setStroke(new BasicStroke(6));
             if (point.getX() > 0) {
@@ -87,10 +87,10 @@ public class GraphGenerator extends JPanel {
                 g2d.setStroke(new BasicStroke(1));
 
                 Line2D line = new Line2D.Double(neighbors.get(i).getPoint(), point);
-          
+
                 edges.add(line);
                 g2d.draw(line);
-                
+
                 if (!neighbors.get(i).getNeighbors().contains(point)) {
                     neighbors.get(i).addNeighbor(point);
                     neighbors.get(vertIndex).addNeighbor(neighbors.get(i).getPoint());
@@ -101,14 +101,34 @@ public class GraphGenerator extends JPanel {
 
     }
 
+    public boolean xIntersect(Line2D line1, Line2D line2) {
+
+        if (line1.getX1() == line2.getX1() || line1.getX1() == line2.getX2()) {
+            return true;
+        } else if (line1.getX2() == line2.getX1() || line1.getX2() == line2.getX2()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean yIntersect(Line2D line1, Line2D line2) {
+
+        if (line1.getY1() == line2.getY1() || line1.getY1() == line2.getY2()) {
+            return true;
+        } else if (line1.getY2() == line2.getY1() || line1.getY2() == line2.getY2()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
     public boolean intersect(ArrayList<Line2D> edges, Line2D line) {
-        
+
         for (int i = 0; i < edges.size(); i++) {
-                if (line.intersectsLine(edges.get(i))) {
-           System.out.println("EDGE: " + edges.get(i).getX1() + " " + edges.get(i).getY1() + " " + edges.get(i).getX2() + " "+ edges.get(i).getY2());
-           System.out.println("LINE: " + line.getX1() + " "  + line.getY1() + " " + line.getX2() + " " + line.getY2());
-                    return true;
-                }
+            if (line.intersectsLine(edges.get(i)) && !xIntersect(edges.get(i),line) && !yIntersect(edges.get(i),line)) {
+                return true;
+            }
         }
 
         return false;
