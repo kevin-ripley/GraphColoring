@@ -21,7 +21,7 @@ public class GraphColoring {
     JFrame frame = new JFrame("Graph Coloring Problem");
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.add(points);
-    frame.setSize(600, 600);
+    frame.setSize(800, 800);
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
     }
