@@ -6,6 +6,7 @@
 package graphcoloring;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  *
@@ -13,7 +14,10 @@ import java.util.ArrayList;
  */
 public class MinConflicts {
     private ArrayList<Vertex> graph;
+    private ArrayList<Vertex> conflictList;
+    private Random randomGenerator;
     private int max_attempts;
+    private boolean solution = false;
     
     /**
      * Constructor
@@ -28,9 +32,61 @@ public class MinConflicts {
     
     /**
      * Find Solution Method
+     * 
+     * @return a boolean True if solution is found or False if not found
      */
     public boolean findSolution() {
-        return false;
+        Vertex currentVert;
+        // searches for a solution until found or max_attempts reached
+        for (int i = 0; i < max_attempts; i++) {
+            if (getConflicts() == 0) {
+                solution = true;
+                break;
+            }
+            // sets the current vertex to a random conflicted vertex
+            currentVert = getRandomVertex(conflictList);
+            // minimizes conflicts for the current vertex
+            minimizeConflicts(currentVert);
+        }
+        return solution;    // placeholder
+    }
+    /**
+     * Get Conflicts Method
+     * 
+     * @return the evaluated number of conflicts found in the graph
+     */
+    public int getConflicts() {
+        int conflicts = 0;
+        // remove all from conflict list as conflicts change (do they?)
+        conflictList.clear();
+        // evaluate each element of graph and move conflicted vertices to conflict list
+        // for (int i = 0; i < graph.getSize(); i++)
+        //      check color against color of connected neighbors
+        //      if conflicted add to conflict list
+        //      increment conflicts by 1
+        return conflicts;
+    }
+    
+    /**
+     * Get Random Vertex Method
+     * 
+     * @param list an ArrayList of vertices
+     * @return a randomly selected vertex from the list passed in based on size
+     */
+    public Vertex getRandomVertex(ArrayList<Vertex> list) {
+        // generate a random integer for index based on remaining size of list
+        int index = randomGenerator.nextInt(list.size());     
+        // remove a random vertex from the conflict list and return it
+        Vertex selection = list.remove(index);
+        return selection;
+    }
+    
+    /**
+     * 
+     * @param v a Vertex object to have conflicts minimized
+     */
+    public void minimizeConflicts(Vertex v) {
+        // minimize the conflicts for the vertex
     }
     
     /**
@@ -50,7 +106,7 @@ public class MinConflicts {
     }
     
     /**
-     * Get Graph Function
+     * Get Graph Method
      * @return the state of the graph after a solution was found, or after max_attempts
      */
     public ArrayList<Vertex> getGraph() {
