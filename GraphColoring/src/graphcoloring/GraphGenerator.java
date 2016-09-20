@@ -60,12 +60,12 @@ public class GraphGenerator extends JPanel {
             for (int j = i; j < neighbors.size(); j++) {
                 double distance = neighbors.get(i).getPoint().distance(neighbors.get(j).getPoint().getX(), neighbors.get(j).getPoint().getY());
                 if (distance != 0 && distance < min) {
-                   if (!intersect(edges,new Line2D.Double(neighbors.get(i).getPoint(), neighbors.get(j).getPoint()))) {
+                  // if (intersect(edges,new Line2D.Double(neighbors.get(i).getPoint(), neighbors.get(j).getPoint()))) {
                         min = distance;
                         point = neighbors.get(j).getPoint();
                         vertIndex = j;
                    }
-                }
+               // }
             }
             g2d.setStroke(new BasicStroke(6));
             if (point.getX() > 0) {
