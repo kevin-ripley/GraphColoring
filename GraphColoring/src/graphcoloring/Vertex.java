@@ -12,18 +12,18 @@ import java.util.*;
 
 public class Vertex {
     final Point2D point; 
-    final ArrayList<Point2D> neighbors = new ArrayList<>();
+    final ArrayList<Vertex> neighbors = new ArrayList<>();
     Color color;
     
     public Vertex(Point2D current, Color color){
         this.point = current; 
         this.color = color;
     }
-    public void addNeighbor(Point2D n){
+    public void addNeighbor(Vertex n){
         this.neighbors.add(n);
     }
     
-    public ArrayList<Point2D> getNeighbors() {
+    public ArrayList<Vertex> getNeighbors() {
         return this.neighbors; 
     }
     

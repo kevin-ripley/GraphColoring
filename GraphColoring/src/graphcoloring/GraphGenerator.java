@@ -25,7 +25,7 @@ public class GraphGenerator extends JPanel {
         ArrayList<Line2D> edges = new ArrayList<>();
         Graphics2D g2d = (Graphics2D) g;
         Color color;
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 100; i++) {
             Dimension size = getSize();
             int w = size.width;
             int h = size.height;
@@ -48,7 +48,7 @@ public class GraphGenerator extends JPanel {
 
         connectLines(g2d, allPoints);
 
-         printNeighbors(allPoints);
+         //printNeighbors(allPoints);
     }
 
     public void connectLines(Graphics2D g2d, ArrayList<Vertex> neighbors) {
@@ -85,8 +85,8 @@ public class GraphGenerator extends JPanel {
                 g2d.draw(line);
 
                 if (!neighbors.get(i).getNeighbors().contains(point)) {
-                    neighbors.get(i).addNeighbor(point);
-                    neighbors.get(vertIndex).addNeighbor(neighbors.get(i).getPoint());
+                      neighbors.get(i).addNeighbor(neighbors.get(vertIndex));
+                            neighbors.get(vertIndex).addNeighbor(neighbors.get(i));
                 }
             }
         }
@@ -119,10 +119,10 @@ public class GraphGenerator extends JPanel {
                         edges.add(line);
                         g2d.draw(line);
 
-                        if (!neighbors.get(i).getNeighbors().contains(point) && neighbors.get(i).getPoint() != point) {
+                        if (!neighbors.get(i).getNeighbors().contains(neighbors.get(vertIndex)) && neighbors.get(i).getPoint() != point) {
 //                            System.out.println("HERE " + point);
-                           neighbors.get(i).addNeighbor(point);
-                            neighbors.get(vertIndex).addNeighbor(neighbors.get(i).getPoint());
+                           neighbors.get(i).addNeighbor(neighbors.get(vertIndex));
+                            neighbors.get(vertIndex).addNeighbor(neighbors.get(i));
                         }
                     }
                 }
@@ -158,7 +158,8 @@ public class GraphGenerator extends JPanel {
             System.out.println("THE NEIGHBORS FOR: " + n.get(i).getPoint());
             for (int j = 0; j < n.get(i).getNeighbors().size(); j++) {
 
-                System.out.println(" " + n.get(i).getNeighbors().get(j));
+                System.out.println(" " + n.get(i).getNeighbors().get(j).getPoint());
+                //System.out.println("The Color is: " + n.get(i).getNeighbors().);
 
             }
 
