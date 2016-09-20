@@ -17,6 +17,7 @@ public class MinConflicts {
     private ArrayList<Vertex> conflictList;
     private Random randomGenerator;
     private int max_attempts;
+    private int attemptsUsed = 0;
     private boolean solution = false;
     
     /**
@@ -41,6 +42,7 @@ public class MinConflicts {
         for (int i = 0; i < max_attempts; i++) {
             if (getConflicts() == 0) {
                 solution = true;
+                attemptsUsed = i;
                 break;
             }
             // sets the current vertex to a random conflicted vertex
@@ -115,5 +117,9 @@ public class MinConflicts {
      */
     public ArrayList<Vertex> getGraph() {
         return graph;
+    }
+    
+    public int getAttemptsUsed() {
+        return attemptsUsed;
     }
 }
