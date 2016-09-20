@@ -25,7 +25,7 @@ public class GraphGenerator extends JPanel {
         ArrayList<Line2D> edges = new ArrayList<>();
         Graphics2D g2d = (Graphics2D) g;
         Color color;
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 5; i++) {
             Dimension size = getSize();
             int w = size.width;
             int h = size.height;
@@ -48,7 +48,7 @@ public class GraphGenerator extends JPanel {
 
         connectLines(g2d, allPoints);
 
-        // printNeighbors(allPoints);
+         printNeighbors(allPoints);
     }
 
     public void connectLines(Graphics2D g2d, ArrayList<Vertex> neighbors) {
@@ -119,8 +119,9 @@ public class GraphGenerator extends JPanel {
                         edges.add(line);
                         g2d.draw(line);
 
-                        if (!neighbors.get(i).getNeighbors().contains(point)) {
-                            neighbors.get(i).addNeighbor(point);
+                        if (!neighbors.get(i).getNeighbors().contains(point) && neighbors.get(i).getPoint() != point) {
+//                            System.out.println("HERE " + point);
+                           neighbors.get(i).addNeighbor(point);
                             neighbors.get(vertIndex).addNeighbor(neighbors.get(i).getPoint());
                         }
                     }
@@ -139,12 +140,6 @@ public class GraphGenerator extends JPanel {
         } else return (line1.getX2() == line2.getX1() && line1.getY2() == line2.getY1())|| (line1.getX2() == line2.getX2() && line1.getY2() == line2.getY2());
     }
 
-//    public boolean yIntersect(Line2D line1, Line2D line2) {
-//
-//        if (line1.getY1() == line2.getY1() || line1.getY1() == line2.getY2()) {
-//            return true;
-//        } else return line1.getY2() == line2.getY1() || line1.getY2() == line2.getY2();
-//    }
 
     public boolean intersect(ArrayList<Line2D> edges, Line2D line) {
 
