@@ -13,9 +13,9 @@ import java.util.*;
 public class Vertex {
     final Point2D point; 
     final ArrayList<Point2D> neighbors = new ArrayList<>();
-    Graphics2D color;
+    Color color;
     
-    public Vertex(Point2D current, Graphics2D color){
+    public Vertex(Point2D current, Color color){
         this.point = current; 
         this.color = color;
     }
@@ -28,8 +28,11 @@ public class Vertex {
     }
     
     public Point2D getPoint() {
-        
         return this.point;
+    }
+    
+    public Color getColor() {
+        return this.color;
     }
     
 }
