@@ -25,7 +25,7 @@ public class GraphGenerator extends JPanel {
         ArrayList<Line2D> edges = new ArrayList<>();
         Graphics2D g2d = (Graphics2D) g;
         Color color;
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 30; i++) {
             Dimension size = getSize();
             int w = size.width;
             int h = size.height;
@@ -58,7 +58,9 @@ public class GraphGenerator extends JPanel {
             double min = 999;
             Point2D point = new Point2D.Double();
             for (int j = i; j < neighbors.size(); j++) {
-                double distance = neighbors.get(i).getPoint().distance(neighbors.get(j).getPoint().getX(), neighbors.get(j).getPoint().getY());
+                // We need to get the distance from neighbors.get(i).getPoint() and then compare it with our next point
+                // For each point if the distance is shorter set the temp variable point to the new nearest Vertex
+                double distance = neighbors.get(i).getPoint().distance( neighbors.get(j).getPoint().getX(), neighbors.get(j).getPoint().getY() );
                 if (distance != 0 && distance < min) {
                     if (!intersect(edges, new Line2D.Double(neighbors.get(i).getPoint(), neighbors.get(j).getPoint()))) {
                         min = distance;
@@ -67,21 +69,13 @@ public class GraphGenerator extends JPanel {
                     }
                 }
             }
+            
+            // Color the graph based of the Vertex's color
             g2d.setStroke(new BasicStroke(6));
             if (point.getX() > 0) {
-                if (i % 3 == 0) {
                     g2d.setColor(neighbors.get(i).getColor());
                     g2d.draw(new Line2D.Double(neighbors.get(i).getPoint(), neighbors.get(i).getPoint()));
                     g2d.draw(new Line2D.Double(point, point));
-                } else if (i % 3 > 1) {
-                    g2d.setColor(neighbors.get(i).getColor());
-                    g2d.draw(new Line2D.Double(neighbors.get(i).getPoint(), neighbors.get(i).getPoint()));
-                    g2d.draw(new Line2D.Double(point, point));
-                } else {
-                    g2d.setColor(neighbors.get(i).getColor());
-                    g2d.draw(new Line2D.Double(neighbors.get(i).getPoint(), neighbors.get(i).getPoint()));
-                    g2d.draw(new Line2D.Double(point, point));
-                }
 
                 g2d.setColor(Color.BLACK);
                 g2d.setStroke(new BasicStroke(1));
