@@ -82,11 +82,15 @@ public class MinConflicts {
     }
     
     /**
+     * Minimize Conflicts Method
      * 
      * @param v a Vertex object to have conflicts minimized
      */
     public void minimizeConflicts(Vertex v) {
         // minimize the conflicts for the vertex
+        // add all neighbors to temporary list
+        // pick color that minimizes the color conflicts with neighbors
+        // end.
     }
     
     /**
