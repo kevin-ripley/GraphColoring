@@ -25,7 +25,7 @@ public class GraphGenerator extends JPanel {
         ArrayList<Line2D> edges = new ArrayList<>();
         Graphics2D g2d = (Graphics2D) g;
         Color color;
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 100; i++) {
             Dimension size = getSize();
             int w = size.width;
             int h = size.height;
@@ -134,30 +134,22 @@ public class GraphGenerator extends JPanel {
 
     public boolean xIntersect(Line2D line1, Line2D line2) {
 
-        if (line1.getX1() == line2.getX1() || line1.getX1() == line2.getX2()) {
+        if ( (line1.getX1() == line2.getX1() && line1.getY1() == line2.getY1())|| (line1.getX1() == line2.getX2() && line1.getY1() == line2.getY2()) ) {
             return true;
-        } else if (line1.getX2() == line2.getX1() || line1.getX2() == line2.getX2()) {
-            return true;
-        } else {
-            return false;
-        }
+        } else return (line1.getX2() == line2.getX1() && line1.getY2() == line2.getY1())|| (line1.getX2() == line2.getX2() && line1.getY2() == line2.getY2());
     }
 
-    public boolean yIntersect(Line2D line1, Line2D line2) {
-
-        if (line1.getY1() == line2.getY1() || line1.getY1() == line2.getY2()) {
-            return true;
-        } else if (line1.getY2() == line2.getY1() || line1.getY2() == line2.getY2()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+//    public boolean yIntersect(Line2D line1, Line2D line2) {
+//
+//        if (line1.getY1() == line2.getY1() || line1.getY1() == line2.getY2()) {
+//            return true;
+//        } else return line1.getY2() == line2.getY1() || line1.getY2() == line2.getY2();
+//    }
 
     public boolean intersect(ArrayList<Line2D> edges, Line2D line) {
 
         for (int i = 0; i < edges.size(); i++) {
-            if (line.intersectsLine(edges.get(i)) && !xIntersect(edges.get(i), line) && !yIntersect(edges.get(i), line)) {
+            if (line.intersectsLine(edges.get(i)) && !xIntersect(edges.get(i), line) ) {
                 return true;
             }
         }
