@@ -5,7 +5,9 @@
         <group>
             <file>file:/C:/Users/bryan/OneDrive/Code/Git/CSCI446/GraphColoring/GraphColoring/src/graphcoloring/GraphColoring.java</file>
             <file>file:/C:/Users/bryan/OneDrive/Code/Git/CSCI446/GraphColoring/GraphColoring/src/graphcoloring/Vertex.java</file>
+            <file>file:/C:/Users/bryan/OneDrive/Code/Git/CSCI446/GraphColoring/GraphColoring/src/graphcoloring/GeneticAlgorithm.java</file>
             <file>file:/C:/Users/bryan/OneDrive/Code/Git/CSCI446/GraphColoring/GraphColoring/src/graphcoloring/GraphGenerator.java</file>
+            <file>file:/C:/Users/bryan/OneDrive/Code/Git/CSCI446/GraphColoring/GraphColoring/src/graphcoloring/MinConflicts.java</file>
         </group>
     </open-files>
 </project-private>
