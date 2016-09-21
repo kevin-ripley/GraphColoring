@@ -17,7 +17,12 @@ import javax.swing.JPanel;
 public class GraphGenerator extends JPanel {
 
     private ArrayList<Vertex> allPoints = new ArrayList<>();
-
+    private ArrayList<Color> colorList = new ArrayList<>();
+    
+    public GraphGenerator(ArrayList<Color> colorList) {
+        this.colorList = colorList;
+    }
+    
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -25,7 +30,7 @@ public class GraphGenerator extends JPanel {
         ArrayList<Line2D> edges = new ArrayList<>();
         Graphics2D g2d = (Graphics2D) g;
         Color color;
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 10; i++) {
             Dimension size = getSize();
             int w = size.width;
             int h = size.height;
@@ -35,14 +40,16 @@ public class GraphGenerator extends JPanel {
 
             Point2D p = new Point2D.Double((double) x, (double) y);
 
-            if (x % 3 == 0) {
-                color = Color.BLUE;
-            } else if (x % 3 > 1) {
-                color = Color.GREEN;
-            } else {
-                color = Color.RED;
-            }
-            Vertex v = new Vertex(p, color);
+            Random randomGenerator = new Random();
+            int index = randomGenerator.nextInt(colorList.size());
+//            if (x % 3 == 0) {
+//                color = Color.BLUE;
+//            } else if (x % 3 > 1) {
+//                color = Color.GREEN;
+//            } else {
+//                color = Color.RED;
+//            }
+            Vertex v = new Vertex(p, colorList.get(index));
             allPoints.add(v);
         }
 
@@ -165,4 +172,12 @@ public class GraphGenerator extends JPanel {
 
         }
     }
+    
+    public int numColors() {
+       return colorList.size();
+    }
+    
+//    public Color getNextColor() {
+//        return colorList.Iterator();
+//    }
 }

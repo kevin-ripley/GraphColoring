@@ -5,6 +5,7 @@
  */
 package graphcoloring;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -15,9 +16,10 @@ import java.util.Random;
 public class MinConflicts {
     private ArrayList<Vertex> graph;
     private ArrayList<Vertex> conflictList;
-    private Random randomGenerator;
+    private Random randomGenerator = new Random();
     private int max_attempts;
     private int attemptsUsed = 0;
+    private int numColors;
     private boolean solution = false;
     
     /**
@@ -26,9 +28,10 @@ public class MinConflicts {
      * @param graph A randomly and completely colored graph type ArrayList<Vertex>
      * @param max_attempts integer maximum number of iterations through the algorithm
      */
-    public MinConflicts(ArrayList<Vertex> graph, int max_attempts) {
+    public MinConflicts(ArrayList<Vertex> graph, int max_attempts, int numColors) {
         this.graph = graph;
         this.max_attempts = max_attempts;
+        this.numColors = numColors;
     }
     
     /**
@@ -90,8 +93,23 @@ public class MinConflicts {
      */
     public void minimizeConflicts(Vertex v) {
         // minimize the conflicts for the vertex
+        ArrayList<Vertex> neighbors = v.getNeighbors();
+        int min = 100;
         // add all neighbors to temporary list
         // pick color that minimizes the color conflicts with neighbors
+        for (int i = 0; i < numColors; i++) {
+            int count = 0;
+            Color minColor;
+            for (int j = 0; j < neighbors.size(); j++) {
+                if (neighbors.get(j).getColor() == v.getColor()) {
+                    count += 1;
+                }
+            }
+            if (count < min) {
+                minColor = v.getColor();
+            }
+            // v.getNextColor();
+        }
         // end.
     }
     
