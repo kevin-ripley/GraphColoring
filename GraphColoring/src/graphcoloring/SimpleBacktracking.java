@@ -21,27 +21,26 @@ public class SimpleBacktracking {
     public boolean solve(Vertex v, ArrayList<Vertex> edges) {
         boolean solution = true;
 
-        for (int k = 0; k < edges.size(); k++) {
-            if (edges.get(k).color == Color.WHITE) {
-                v = edges.get(k);
-                solution = false;
-                break;
+        for (int i = 0; i < edges.size(); i++) {
+            if (edges.get(i).color == Color.YELLOW) {
+                v = edges.get(i);
             }
         }
-        if (solution) {
+
+        if (isGoal(v, edges)) {
             return true;
         }
 
         // if (!v.neighbors.get(i).visited) {
         for (int j = 0; j < v.colorsTried.length; j++) {
-            v.setColor(setColor(j));
-            if (isGoal(v)) {
-                for (int i = 0; i < v.neighbors.size(); i++) {
+            if (isGoal(v, j)) {
+                //  for (int i = 0; i < v.neighbors.size(); i++) {
 
-                    if (solve(v.neighbors.get(i), edges)) {
-                        return true;
-                    }
+                if (solve(v, edges)) {
+                    return true;
                 }
+                v.setColor(Color.YELLOW);
+                //}
             }
 
         }
@@ -63,7 +62,19 @@ public class SimpleBacktracking {
 
     }
 
-    public boolean isGoal(Vertex v) {
+    public boolean isGoal(Vertex v, ArrayList<Vertex> vertices) {
+        for (int i = 0; i < vertices.size(); i++) {
+            for (int k = 0; k < vertices.get(i).neighbors.size(); k++) {
+                if (vertices.get(i).neighbors.get(k).color == vertices.get(i).color) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean isGoal(Vertex v, int j) {
+        v.setColor(setColor(j));
 
         for (int i = 0; i < v.neighbors.size(); i++) {
             if (v.color == v.neighbors.get(i).color) {

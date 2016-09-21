@@ -49,7 +49,7 @@ public class GraphGenerator extends JPanel {
 //            } else {
 //                color = Color.RED;
 //            }
-            Vertex v = new Vertex(p, Color.WHITE);
+            Vertex v = new Vertex(p, Color.YELLOW);
             allPoints.add(v);
         }
 
@@ -119,7 +119,7 @@ public class GraphGenerator extends JPanel {
             }
         }
         SimpleBacktracking sb = new SimpleBacktracking();
-        System.out.println(sb.solve(neighbors));
+        System.out.println(sb.solve(neighbors.get(0), neighbors));
         
         paintLines(g2d, edges, neighbors);
     }
