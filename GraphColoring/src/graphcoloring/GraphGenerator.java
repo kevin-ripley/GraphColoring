@@ -25,7 +25,7 @@ public class GraphGenerator extends JPanel {
         ArrayList<Line2D> edges = new ArrayList<>();
         Graphics2D g2d = (Graphics2D) g;
         Color color;
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 10; i++) {
             Dimension size = getSize();
             int w = size.width;
             int h = size.height;
@@ -69,20 +69,12 @@ public class GraphGenerator extends JPanel {
                     }
                 }
             }
-            // Color the graph based of the Vertex's color
-            g2d.setStroke(new BasicStroke(6));
+ 
             if (point.getX() > 0) {
-                g2d.setColor(neighbors.get(i).getColor());
-                g2d.draw(new Line2D.Double(neighbors.get(i).getPoint(), neighbors.get(i).getPoint()));
-                g2d.draw(new Line2D.Double(point, point));
-
-                g2d.setColor(Color.BLACK);
-                g2d.setStroke(new BasicStroke(1));
 
                 Line2D line = new Line2D.Double(neighbors.get(i).getPoint(), point);
 
                 edges.add(line);
-                g2d.draw(line);
 
                 if (!neighbors.get(i).getNeighbors().contains(point)) {
                       neighbors.get(i).addNeighbor(neighbors.get(vertIndex));
@@ -105,34 +97,40 @@ public class GraphGenerator extends JPanel {
                 if (!intersect(edges, new Line2D.Double(neighbors.get(i).getPoint(), neighbors.get(j).getPoint()))) {
                     point = neighbors.get(j).getPoint();
                     vertIndex = j;
-                    g2d.setStroke(new BasicStroke(6));
                     if (point.getX() > 0) {
-                        g2d.setColor(neighbors.get(i).getColor());
-                        g2d.draw(new Line2D.Double(neighbors.get(i).getPoint(), neighbors.get(i).getPoint()));
-                        g2d.draw(new Line2D.Double(point, point));
-
-                        g2d.setColor(Color.BLACK);
-                        g2d.setStroke(new BasicStroke(1));
 
                         Line2D line = new Line2D.Double(neighbors.get(i).getPoint(), point);
 
                         edges.add(line);
-                        g2d.draw(line);
 
                         if (!neighbors.get(i).getNeighbors().contains(neighbors.get(vertIndex)) && neighbors.get(i).getPoint() != point) {
-//                            System.out.println("HERE " + point);
                            neighbors.get(i).addNeighbor(neighbors.get(vertIndex));
                             neighbors.get(vertIndex).addNeighbor(neighbors.get(i));
                         }
                     }
                 }
             }
-            // Color the graph based of the Vertex's color
-
         }
-
+        SimpleBacktracking sb = new SimpleBacktracking();
+        sb.solve(neighbors);
+        
+        paintLines(g2d, edges, neighbors);
     }
 
+    public void paintLines(Graphics2D g2d, ArrayList<Line2D> edges, ArrayList<Vertex> points) {
+        g2d.setStroke(new BasicStroke(6));
+        for(int j = 0; j < points.size(); j++){
+            g2d.setColor(points.get(j).getColor());
+            g2d.draw(new Line2D.Double(points.get(j).getPoint(), points.get(j).getPoint()));
+        }
+        g2d.setStroke(new BasicStroke(1));
+        for(int i = 0; i < edges.size(); i++){
+            g2d.setColor(Color.BLACK);
+            g2d.draw(edges.get(i));
+        }
+        
+    }
+    
     public boolean xIntersect(Line2D line1, Line2D line2) {
 
         if ( (line1.getX1() == line2.getX1() && line1.getY1() == line2.getY1())|| (line1.getX1() == line2.getX2() && line1.getY1() == line2.getY2()) ) {
