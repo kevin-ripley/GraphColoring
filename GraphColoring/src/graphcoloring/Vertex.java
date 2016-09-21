@@ -35,4 +35,8 @@ public class Vertex {
         return this.color;
     }
     
+    public void setColor(Color color) {
+        this.color = color;
+    }
+    
 }

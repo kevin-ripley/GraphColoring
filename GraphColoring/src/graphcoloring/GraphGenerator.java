@@ -177,7 +177,7 @@ public class GraphGenerator extends JPanel {
        return colorList.size();
     }
     
-//    public Color getNextColor() {
-//        return colorList.Iterator();
-//    }
+    public ArrayList<Color> getColors() {
+        return colorList;
+    }
 }
