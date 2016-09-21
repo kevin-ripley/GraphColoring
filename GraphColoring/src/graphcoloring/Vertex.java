@@ -62,6 +62,7 @@ public class Vertex {
     
     public void setColor(Color color) {
         this.color = color;     
+
     }
     
 }

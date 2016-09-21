@@ -5,6 +5,8 @@
  */
 package graphcoloring;
 
+import java.awt.Color;
+import java.util.ArrayList;
 import javax.swing.JFrame;
 
 /**
@@ -17,7 +19,12 @@ public class GraphColoring {
      * @param args the command line arguments
      */
     public static void main(String[] args){
-    GraphGenerator points = new GraphGenerator();
+    ArrayList<Color> colorList = new ArrayList<>();
+    colorList.add(Color.BLUE);
+    colorList.add(Color.GREEN);
+    colorList.add(Color.RED);
+    
+    GraphGenerator points = new GraphGenerator(colorList);
     JFrame frame = new JFrame("Graph Coloring Problem");
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.add(points);

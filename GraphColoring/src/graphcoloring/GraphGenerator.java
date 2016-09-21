@@ -17,7 +17,12 @@ import javax.swing.JPanel;
 public class GraphGenerator extends JPanel {
 
     private ArrayList<Vertex> allPoints = new ArrayList<>();
-
+    private ArrayList<Color> colorList = new ArrayList<>();
+    
+    public GraphGenerator(ArrayList<Color> colorList) {
+        this.colorList = colorList;
+    }
+    
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -35,14 +40,16 @@ public class GraphGenerator extends JPanel {
 
             Point2D p = new Point2D.Double((double) x, (double) y);
 
-            if (x % 3 == 0) {
-                color = Color.BLUE;
-            } else if (x % 3 > 1) {
-                color = Color.GREEN;
-            } else {
-                color = Color.RED;
-            }
-            Vertex v = new Vertex(p, color);
+            Random randomGenerator = new Random();
+            int index = randomGenerator.nextInt(colorList.size());
+//            if (x % 3 == 0) {
+//                color = Color.BLUE;
+//            } else if (x % 3 > 1) {
+//                color = Color.GREEN;
+//            } else {
+//                color = Color.RED;
+//            }
+            Vertex v = new Vertex(p, colorList.get(index));
             allPoints.add(v);
         }
 
@@ -69,7 +76,6 @@ public class GraphGenerator extends JPanel {
                     }
                 }
             }
- 
             if (point.getX() > 0) {
 
                 Line2D line = new Line2D.Double(neighbors.get(i).getPoint(), point);
@@ -97,6 +103,7 @@ public class GraphGenerator extends JPanel {
                 if (!intersect(edges, new Line2D.Double(neighbors.get(i).getPoint(), neighbors.get(j).getPoint()))) {
                     point = neighbors.get(j).getPoint();
                     vertIndex = j;
+
                     if (point.getX() > 0) {
 
                         Line2D line = new Line2D.Double(neighbors.get(i).getPoint(), point);
@@ -162,5 +169,13 @@ public class GraphGenerator extends JPanel {
             }
 
         }
+    }
+    
+    public int numColors() {
+       return colorList.size();
+    }
+    
+    public ArrayList<Color> getColors() {
+        return colorList;
     }
 }
