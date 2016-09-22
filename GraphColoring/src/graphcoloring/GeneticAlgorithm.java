@@ -14,9 +14,10 @@ import java.util.Random;
  * @author Bryan Downs
  */
 public class GeneticAlgorithm {
-    private ArrayList<ArrayList<Vertex>> graphList = new ArrayList<>();
+    private ArrayList<ArrayList<Vertex>> population = new ArrayList<>();
+    private ArrayList<Vertex> graph;
     private ArrayList<Vertex> youngestChild = new ArrayList<>();
-    private ArrayList<Color> colorList = new ArrayList<>();
+    private ArrayList<Color> colorList;
     private int max_attempts = 0;
     private double mutateProb = 0;
     private Random selection = new Random();
@@ -24,8 +25,9 @@ public class GeneticAlgorithm {
     /**
      * Constructor
      */
-    public GeneticAlgorithm(ArrayList<ArrayList<Vertex>> graphList, ArrayList<Color> colorList, int max_attempts) {
-        this.graphList = graphList;
+    public GeneticAlgorithm(ArrayList<Vertex> graph, int n, ArrayList<Color> colorList, int max_attempts) {
+        this.graph = graph;
+        createPopulation(n);
         this.colorList = colorList;
         this.max_attempts = max_attempts;
     }
@@ -56,7 +58,7 @@ public class GeneticAlgorithm {
             child.get(i).setColor(b.get(i).getColor());
         }
         youngestChild = mutate(youngestChild, 19);
-        graphList.add(youngestChild);
+        population.add(youngestChild);
         return youngestChild;
     }
     
@@ -68,9 +70,9 @@ public class GeneticAlgorithm {
         ArrayList<Vertex> graphB = new ArrayList<>();
         
         // get a random member from graph list
-        graphA = graphList.get(selection.nextInt(graphList.size()));
+        graphA = population.get(selection.nextInt(population.size()));
         // get a second random member from graph list
-        graphB = graphList.get(selection.nextInt(graphList.size()));
+        graphB = population.get(selection.nextInt(population.size()));
         
         // get the fitness of each randomly selected graph and compare them
         // a lower fitness score is better
@@ -117,7 +119,21 @@ public class GeneticAlgorithm {
         return count;
     }
     
-    public ArrayList<Vertex> getYoungestChild() {
+    public ArrayList<Vertex> getGraph() {
         return youngestChild;
+    }
+    
+        // recolors graph to create an array population for the GA
+    private ArrayList<ArrayList<Vertex>> createPopulation(int n) {
+        Random rGen = new Random();
+        ArrayList<Vertex> tempgraph = new ArrayList<>();
+        tempgraph = graph;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < tempgraph.size(); j++) {
+                tempgraph.get(j).setColor(colorList.get(rGen.nextInt(colorList.size())));
+            }
+            population.add(tempgraph);
+        }
+        return population;
     }
 }

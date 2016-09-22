@@ -14,7 +14,7 @@ import java.util.Random;
  * @author bryan
  */
 public class MinConflicts {
-    private ArrayList<Vertex> graph = new ArrayList<>();
+    private ArrayList<Vertex> graph;
     private ArrayList<Vertex> conflictList = new ArrayList<>();
     private ArrayList<Color> colorList = new ArrayList<>();
     private Random randomGenerator = new Random();

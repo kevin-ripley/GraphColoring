@@ -130,15 +130,13 @@ public class GraphGenerator extends JPanel {
 //        MinConflicts mc = new MinConflicts(neighbors, colorList, 100);
 //        System.out.println(mc.findSolution());
 
-        GeneticAlgorithm ga = new GeneticAlgorithm(gaPopulation(10), colorList, 10000);
+        GeneticAlgorithm ga = new GeneticAlgorithm(neighbors, 100, colorList, 10000);
         System.out.println(ga.search());
-//        neighbors = ga.getYoungestChild();
-        paintLines(g2d, edges, neighbors);
 
 //        SimpleBacktracking sb = new SimpleBacktracking();
 //        System.out.println(sb.solve(neighbors.get(0), neighbors));
 
-        paintLines(g2d, edges, neighbors);
+        paintLines(g2d, edges, ga.getGraph());
         
     }
 
@@ -195,19 +193,5 @@ public class GraphGenerator extends JPanel {
     
     public ArrayList<Color> getColors() {
         return colorList;
-    }
-    
-    // recolors graph to create an array population for the GA
-    public ArrayList<ArrayList<Vertex>> gaPopulation(int n) {
-        ArrayList<ArrayList<Vertex>> population = new ArrayList<>();
-        Random rGen = new Random();
-        for (int i = 0; i < n; i++) {
-            ArrayList<Vertex> tempGraph = allPoints;
-            for (int j = 0; j < allPoints.size(); j++) {
-                tempGraph.get(j).setColor(colorList.get(rGen.nextInt(colorList.size())));
-            }
-            population.add(tempGraph);
-        }
-        return population;
     }
 }
