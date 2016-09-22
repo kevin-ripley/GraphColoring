@@ -54,10 +54,10 @@ public class GeneticAlgorithm {
      * Reproduce Method
      */
     public ArrayList<Vertex> reproduce(ArrayList<Vertex> a, ArrayList<Vertex> b) {
-        ArrayList<Vertex> child = a;
+        youngestChild = a;
         // swaps the colors of the first half of vertices in A with those in B
         for (int i = 0; i < a.size()/2; i++) {
-            child.get(i).setColor(b.get(i).getColor());
+            youngestChild.get(i).setColor(b.get(i).getColor());
         }
         youngestChild = mutate(youngestChild, 19);
         population.add(youngestChild);
@@ -133,7 +133,6 @@ public class GeneticAlgorithm {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < tempgraph.size(); j++) {
                 int colorIndex = rGen.nextInt(colorList.size());
-                System.out.println(colorIndex);
                 tempgraph.get(j).setColor(colorList.get(colorIndex));
             }
             population.add(tempgraph);

@@ -30,7 +30,7 @@ public class GraphGenerator extends JPanel {
         ArrayList<Line2D> edges = new ArrayList<>();
         Graphics2D g2d = (Graphics2D) g;
         Color color;
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 10; i++) {
             Dimension size = getSize();
             int w = size.width;
             int h = size.height;
