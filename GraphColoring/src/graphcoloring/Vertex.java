@@ -9,60 +9,71 @@ import java.awt.*;
 import java.awt.geom.*;
 import java.util.*;
 
-
 public class Vertex {
-    final Point2D point; 
+
+    Random r = new Random();
+    final Point2D point;
     final ArrayList<Vertex> neighbors = new ArrayList<>();
     Color color;
     boolean visited;
-    int[] colorsTried = new int[3];
-    
-    public Vertex(Point2D current, Color color){
-        this.point = current; 
+    ArrayList<Color> colorsTried = new ArrayList<>();
+
+    public Vertex(Point2D current, Color color) {
+        this.point = current;
         this.color = color;
         this.visited = false;
-        this.colorsTried[0] = 0;
-        this.colorsTried[1] = 0;
-        this.colorsTried[2] = 0;
-        
+        this.colorsTried.add(Color.BLUE);
+        this.colorsTried.add(Color.GREEN);
+        this.colorsTried.add(Color.RED);
+        this.colorsTried.add(Color.BLACK);
+
     }
-    
-    public int[] getColorsTried() {
-        return this.colorsTried;
+
+    public void resetColors() {
+        colorsTried.clear();
+        this.colorsTried.add(Color.BLUE);
+        this.colorsTried.add(Color.GREEN);
+        this.colorsTried.add(Color.RED);
+        this.colorsTried.add(Color.BLACK);
+
     }
-    
-    public void setColorsTried(int i){
-        this.colorsTried[i] = 1;
+
+    public void removeColor(Color color) {
+       this.colorsTried.remove(color);
     }
-    
-    public void addNeighbor(Vertex n){
+
+    public Color getFCColor() {
+        return this.colorsTried.get(r.nextInt(this.colorsTried.size()));
+    }
+
+    public void addNeighbor(Vertex n) {
         this.neighbors.add(n);
     }
-    
+
     public ArrayList<Vertex> getNeighbors() {
-        return this.neighbors; 
+        return this.neighbors;
     }
-    
+
     public Point2D getPoint() {
         return this.point;
     }
-    
-   public boolean isVisited() {
-       
-       return this.visited;
-   }
-   
-   public void setVisited(boolean v) {
-       this.visited = v;
-   }
-    
+
+    public boolean isVisited() {
+
+        return this.visited;
+    }
+
+    public void setVisited(boolean v) {
+        this.visited = v;
+    }
+
     public Color getColor() {
         return this.color;
     }
-    
+
     public void setColor(Color color) {
-        this.color = color;     
+        this.color = color;
 
     }
-    
+
 }

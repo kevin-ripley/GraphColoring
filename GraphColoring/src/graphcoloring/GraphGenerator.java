@@ -119,10 +119,17 @@ public class GraphGenerator extends JPanel {
             }
         }
 
+
+//        SimpleBacktracking sb = new SimpleBacktracking();
+//        System.out.println(sb.solve(neighbors.get(0), neighbors));
+          BacktrackingFC fc = new BacktrackingFC();
+          System.out.println(fc.solve(neighbors.get(0), neighbors));
+
 //        SimpleBacktracking sb = new SimpleBacktracking();
 //        sb.solve(neighbors);
 //        MinConflicts mc = new MinConflicts(neighbors, colorList, 100);
 //        System.out.println(mc.findSolution());
+
         GeneticAlgorithm ga = new GeneticAlgorithm(gaPopulation(10), colorList, 10000);
         System.out.println(ga.search());
 //        neighbors = ga.getYoungestChild();
@@ -131,6 +138,7 @@ public class GraphGenerator extends JPanel {
 //        SimpleBacktracking sb = new SimpleBacktracking();
 //        System.out.println(sb.solve(neighbors.get(0), neighbors));
 
+        paintLines(g2d, edges, neighbors);
         
     }
 
