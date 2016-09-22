@@ -41,7 +41,7 @@ public class GraphGenerator extends JPanel {
             Point2D p = new Point2D.Double((double) x, (double) y);
 
             Random randomGenerator = new Random();
-            int index = randomGenerator.nextInt(colorList.size());
+          //  int index = randomGenerator.nextInt(colorList.size());
 //            if (x % 3 == 0) {
 //                color = Color.BLUE;
 //            } else if (x % 3 > 1) {
@@ -49,7 +49,7 @@ public class GraphGenerator extends JPanel {
 //            } else {
 //                color = Color.RED;
 //            }
-            Vertex v = new Vertex(p, colorList.get(index));
+            Vertex v = new Vertex(p, Color.YELLOW);
             allPoints.add(v);
         }
 
@@ -118,11 +118,16 @@ public class GraphGenerator extends JPanel {
                 }
             }
         }
+<<<<<<< HEAD
 //        SimpleBacktracking sb = new SimpleBacktracking();
 //        sb.solve(neighbors);
 //        MinConflicts mc = new MinConflicts(neighbors, colorList, 100);
 //        System.out.println(mc.findSolution());
 //        paintLines(g2d, edges, neighbors);
+=======
+        SimpleBacktracking sb = new SimpleBacktracking();
+        System.out.println(sb.solve(neighbors.get(0), neighbors));
+>>>>>>> 722b28f82ab0438b4bc0a153b98e67e88b7a2f69
         
     }
 
