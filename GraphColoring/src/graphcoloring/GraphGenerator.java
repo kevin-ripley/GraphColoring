@@ -30,7 +30,7 @@ public class GraphGenerator extends JPanel {
         ArrayList<Line2D> edges = new ArrayList<>();
         Graphics2D g2d = (Graphics2D) g;
         Color color;
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 100; i++) {
             Dimension size = getSize();
             int w = size.width;
             int h = size.height;
@@ -118,12 +118,19 @@ public class GraphGenerator extends JPanel {
                 }
             }
         }
+
 //        SimpleBacktracking sb = new SimpleBacktracking();
 //        System.out.println(sb.solve(neighbors.get(0), neighbors));
           BacktrackingFC fc = new BacktrackingFC();
           System.out.println(fc.solve(neighbors.get(0), neighbors));
-        
+
+//        SimpleBacktracking sb = new SimpleBacktracking();
+//        sb.solve(neighbors);
+//        MinConflicts mc = new MinConflicts(neighbors, colorList, 100);
+//        System.out.println(mc.findSolution());
         paintLines(g2d, edges, neighbors);
+
+        
     }
 
     public void paintLines(Graphics2D g2d, ArrayList<Line2D> edges, ArrayList<Vertex> points) {

@@ -35,7 +35,7 @@ public class BacktrackingFC {
         while (remainingVerticies(edges)) {
             // For the number of vertices, pick one, if it is yellow we need to color it.
             //TODO we hardcode the graph size now. We need to add user input later
-            v = edges.get(this.r.nextInt(10));
+            v = edges.get(this.r.nextInt(100));
 
             if (v.color == Color.YELLOW) {
                 //We now know we need to color the vertex. We'll loop over each color and check each neighbor for consistency. If the color is not consistent
