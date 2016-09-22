@@ -122,8 +122,8 @@ public class GraphGenerator extends JPanel {
 
 //        SimpleBacktracking sb = new SimpleBacktracking();
 //        System.out.println(sb.solve(neighbors.get(0), neighbors));
-          BacktrackingFC fc = new BacktrackingFC();
-          System.out.println(fc.solve(neighbors.get(0), neighbors));
+//          BacktrackingFC fc = new BacktrackingFC();
+//          System.out.println(fc.solve(neighbors.get(0), neighbors));
 
 //        SimpleBacktracking sb = new SimpleBacktracking();
 //        sb.solve(neighbors);

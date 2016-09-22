@@ -18,6 +18,7 @@ public class GeneticAlgorithm {
     private ArrayList<Vertex> graph;
     private ArrayList<Vertex> youngestChild = new ArrayList<>();
     private ArrayList<Color> colorList;
+    private int populationSize;
     private int max_attempts = 0;
     private double mutateProb = 0;
     private Random selection = new Random();
@@ -25,9 +26,9 @@ public class GeneticAlgorithm {
     /**
      * Constructor
      */
-    public GeneticAlgorithm(ArrayList<Vertex> graph, int n, ArrayList<Color> colorList, int max_attempts) {
+    public GeneticAlgorithm(ArrayList<Vertex> graph, int populationSize, ArrayList<Color> colorList, int max_attempts) {
         this.graph = graph;
-        createPopulation(n);
+        this.populationSize = populationSize;
         this.colorList = colorList;
         this.max_attempts = max_attempts;
     }
@@ -36,6 +37,7 @@ public class GeneticAlgorithm {
      * Search Method
      */
     public boolean search() {
+        generatePopulation(populationSize);
         ArrayList<Vertex> parentA = new ArrayList<>();
         ArrayList<Vertex> parentB = new ArrayList<>();
         for (int i = 0; i < max_attempts; i++) {
@@ -124,16 +126,22 @@ public class GeneticAlgorithm {
     }
     
         // recolors graph to create an array population for the GA
-    private ArrayList<ArrayList<Vertex>> createPopulation(int n) {
+    private ArrayList<ArrayList<Vertex>> generatePopulation(int n) {
         Random rGen = new Random();
         ArrayList<Vertex> tempgraph = new ArrayList<>();
         tempgraph = graph;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < tempgraph.size(); j++) {
-                tempgraph.get(j).setColor(colorList.get(rGen.nextInt(colorList.size())));
+                int colorIndex = rGen.nextInt(colorList.size());
+                System.out.println(colorIndex);
+                tempgraph.get(j).setColor(colorList.get(colorIndex));
             }
             population.add(tempgraph);
         }
         return population;
+    }
+    
+    public int getPopulationSize() {
+        return populationSize;
     }
 }
