@@ -23,7 +23,7 @@ public class GraphColoring {
     colorList.add(Color.BLUE);
     colorList.add(Color.GREEN);
     colorList.add(Color.RED);
-    colorList.add(Color.BLACK);
+//    colorList.add(Color.BLACK);
     
     GraphGenerator points = new GraphGenerator(colorList);
     JFrame frame = new JFrame("Graph Coloring Problem");

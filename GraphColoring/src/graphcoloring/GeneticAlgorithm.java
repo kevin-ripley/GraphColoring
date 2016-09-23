@@ -16,7 +16,7 @@ import java.util.Random;
 public class GeneticAlgorithm {
     private ArrayList<ArrayList<Vertex>> population = new ArrayList<>();
     private ArrayList<Vertex> graph;
-    private ArrayList<Vertex> youngestChild = new ArrayList<>();
+    private ArrayList<Vertex> child = new ArrayList<>();
     private ArrayList<Color> colorList;
     private int populationSize;
     private int max_attempts = 0;
@@ -54,14 +54,14 @@ public class GeneticAlgorithm {
      * Reproduce Method
      */
     public ArrayList<Vertex> reproduce(ArrayList<Vertex> a, ArrayList<Vertex> b) {
-        youngestChild = a;
+        child = a;
         // swaps the colors of the first half of vertices in A with those in B
         for (int i = 0; i < a.size()/2; i++) {
-            youngestChild.get(i).setColor(b.get(i).getColor());
+            child.get(i).setColor(b.get(i).getColor());
         }
-        youngestChild = mutate(youngestChild, 19);
-        population.add(youngestChild);
-        return youngestChild;
+        child = mutate(child, 19);
+        population.add(child);
+        return child;
     }
     
     /**
@@ -115,14 +115,13 @@ public class GeneticAlgorithm {
             for (int j = 0; j < graph.get(i).getNeighbors().size(); j++) {
                 if (graph.get(i).getColor() == graph.get(i).getNeighbors().get(j).getColor())
                     count +=1;
-                    break;
             }
         }
         return count;
     }
     
     public ArrayList<Vertex> getGraph() {
-        return youngestChild;
+        return child;
     }
     
         // recolors graph to create an array population for the GA

@@ -30,7 +30,7 @@ public class GraphGenerator extends JPanel {
         ArrayList<Line2D> edges = new ArrayList<>();
         Graphics2D g2d = (Graphics2D) g;
         Color color;
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 20; i++) {
             Dimension size = getSize();
             int w = size.width;
             int h = size.height;
@@ -82,7 +82,7 @@ public class GraphGenerator extends JPanel {
 
                 edges.add(line);
 
-                if (!neighbors.get(i).getNeighbors().contains(point) && neighbors.get(i).getNeighbors().size() < 2) {
+                if (!neighbors.get(i).getNeighbors().contains(point)) {
                       neighbors.get(i).addNeighbor(neighbors.get(vertIndex));
                             neighbors.get(vertIndex).addNeighbor(neighbors.get(i));
                 }
@@ -100,7 +100,7 @@ public class GraphGenerator extends JPanel {
                 // We need to get the distance from neighbors.get(i).getPoint() and then compare it with our next point
                 // For each point if the distance is shorter set the temp variable point to the new nearest Vertex
                 double distance = neighbors.get(i).getPoint().distance(neighbors.get(j).getPoint().getX(), neighbors.get(j).getPoint().getY());
-                if (!intersect(edges, new Line2D.Double(neighbors.get(i).getPoint(), neighbors.get(j).getPoint()))&& neighbors.get(i).getNeighbors().size() < 2) {
+                if (!intersect(edges, new Line2D.Double(neighbors.get(i).getPoint(), neighbors.get(j).getPoint()))) {
                     point = neighbors.get(j).getPoint();
                     vertIndex = j;
 
@@ -110,7 +110,7 @@ public class GraphGenerator extends JPanel {
 
                         edges.add(line);
 
-                        if (!neighbors.get(i).getNeighbors().contains(neighbors.get(vertIndex)) && neighbors.get(i).getPoint() != point && neighbors.get(i).getNeighbors().size() < 2) {
+                        if (!neighbors.get(i).getNeighbors().contains(neighbors.get(vertIndex))) {
                            neighbors.get(i).addNeighbor(neighbors.get(vertIndex));
                             neighbors.get(vertIndex).addNeighbor(neighbors.get(i));
                         }
@@ -130,13 +130,13 @@ public class GraphGenerator extends JPanel {
 //        MinConflicts mc = new MinConflicts(neighbors, colorList, 100);
 //        System.out.println(mc.findSolution());
 
-        GeneticAlgorithm ga = new GeneticAlgorithm(neighbors, 100, colorList, 10000);
-        System.out.println(ga.search());
+//        GeneticAlgorithm ga = new GeneticAlgorithm(neighbors, 10000, colorList, 10000000);
+//        System.out.println(ga.search());
 
 //        SimpleBacktracking sb = new SimpleBacktracking();
 //        System.out.println(sb.solve(neighbors.get(0), neighbors));
 
-        paintLines(g2d, edges, ga.getGraph());
+        paintLines(g2d, edges, neighbors);
         
     }
 
