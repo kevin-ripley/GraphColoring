@@ -135,8 +135,9 @@ public class GraphGenerator extends JPanel {
                 break;
             case 4:
                 colorGraph(neighbors);
-                GeneticAlgorithm ga = new GeneticAlgorithm(neighbors, 100, colorList, 10000);
+                GeneticAlgorithm ga = new GeneticAlgorithm(neighbors, 10, colorList, 100000);
                 System.out.println(ga.search());
+                neighbors = ga.getGraph();
                 break;
             default:
                 System.out.println("Error");
