@@ -7,7 +7,11 @@ package graphcoloring;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Random;
+
+
 
 /**
  *
@@ -22,8 +26,9 @@ public class GeneticAlgorithm {
     private int populationSize;
     private int max_attempts = 0;
     private int mutateProb = 0;
+    private int tSize = 5;
     private Random selection = new Random();
-    
+ 
     /**
      * Constructor
      * 
@@ -39,6 +44,23 @@ public class GeneticAlgorithm {
         this.max_attempts = max_attempts;
     }
     
+//    class FitnessComparator implements Comparator<ArrayList<Vertex>> {
+//
+//        @Override
+//        public int compare(ArrayList<Vertex> a1, ArrayList<Vertex> a2) {
+//            int a1Fitness, a2Fitness;
+//            a1Fitness = getFitness(a1);
+//            a2Fitness = getFitness(a2);
+//            if (a1Fitness > a2Fitness)
+//                return 1;
+//            else if (a1Fitness < a2Fitness)
+//                return -1;
+//            else
+//                return 0;
+//
+//        }
+//    }
+    
     /**
      * Search Method
      * 
@@ -46,16 +68,17 @@ public class GeneticAlgorithm {
      */
     public boolean search() {
         generatePopulation(populationSize);
+//        Collections.sort(population, new FitnessComparator());
         ArrayList<Vertex> parentA;
         ArrayList<Vertex> parentB;
         for (int i = 0; i < max_attempts; i++) {
-                    // select parents through a tournament
-            parentA = tournament();
-            parentB = tournament();
+            // select parents through a tournament
+            parentA = tournament(tSize);
+            parentB = tournament(tSize);
             // reproduce selected participants
             if (isSolution(reproduce(parentA, parentB))) 
                 return true;
-            removeLeastFit();
+//            removeLeastFit();
         }
         child = getMostFit();
         return false;
@@ -88,22 +111,31 @@ public class GeneticAlgorithm {
      * 
      * @return the more fit of two randomly selected graphs
      */
-    private ArrayList<Vertex> tournament() {
-        ArrayList<Vertex> graphA;
-        ArrayList<Vertex> graphB;
-        
-        // get a random member from graph list
-        graphA = population.get(selection.nextInt(population.size()));
-        // get a second random member from graph list
-        graphB = population.get(selection.nextInt(population.size()));
-        
-        // get the fitness of each randomly selected graph and compare them
-        // a higher fitness score is better
-        if (getFitness(graphA) > getFitness(graphB))
+    private ArrayList<Vertex> tournament(int tSize) {
+        ArrayList<Vertex> graphA = population.get(selection.nextInt(population.size()));
+        ArrayList<Vertex> temp = population.get(selection.nextInt(population.size()));
+        if (tSize == 1) {
             return graphA;
-        else
-            return graphB;
+        } else if ( tSize == 2){
+            if(getFitness(temp) > getFitness(graphA))
+                return temp;
+            else
+                return graphA;
+        }else{
+            for (int i = 0; i < tSize; i++) {
+                if (getFitness(temp) > getFitness(graphA)) 
+                    graphA = population.get(selection.nextInt(population.size()));
+                else
+                    temp = population.get(selection.nextInt(population.size()));
+            }
+            if (getFitness(temp) > getFitness(graphA))
+                return temp;
+            else
+                return graphA;
+        }
     }
+
+    
     
     /**
      * Get Mutation Probability Method
