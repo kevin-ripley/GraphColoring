@@ -17,53 +17,59 @@ import java.util.Random;
 /*NOTE THIS WORKS ALMOST EVERYTIME WITH VERTICE EDGE CONSTRAINTS, WITHOUT MANY OF THE GRAPHS ARE NOT SOLVABLE. THIS IS THE SAME THING BRYAN WAS TALKING ABOUT
 WE WILL NEED TO SET A VERTEX EDGE CONSTRAINT FOR SIZE 3 COLORINGS. WE WILL EXPLAIN WHY IN OUR PAPER, UNLESS SOMEONE HAS ANOTHER SOLUTION
  */
-public class BacktrackingFC {
+public class MAC {
 
     Color[] colors = new Color[4];
     Random r = new Random();
 
-    public BacktrackingFC() {
+    public MAC() {
         this.colors[0] = Color.blue;
         this.colors[1] = Color.GREEN;
         this.colors[2] = Color.RED;
         this.colors[3] = Color.black;
     }
 
-    public boolean solve(Vertex v, ArrayList<Vertex> edges) {
+    public boolean solve(Vertex v1, Vertex v2, ArrayList<Vertex> edges) {
 
         //We'll use a while loop instead of recursion to avoid stack overflow. Some of the paths can take a while to find a solution and recursion generally puts too much on the stack
         while (remainingVerticies(edges)) {
             // For the number of vertices, pick one, if it is yellow we need to color it.
             //TODO we hardcode the graph size now. We need to add user input later
-            v = edges.get(this.r.nextInt(10));
+            v1 = edges.get(this.r.nextInt(100));
+            //   for ( int k = 0; k < v1.getNeighbors().size(); k++){
+            v2 = v1.getNeighbors().get(this.r.nextInt(v1.getNeighbors().size()));
+            // if (v1.color == Color.YELLOW && v2.color == Color.YELLOW) {
+            //We now know we need to color the vertex. We'll loop over each color and check each neighbor for consistency. If the color is not consistent
+            //remove it from the available colros
+            int neighbor = this.r.nextInt(v2.getNeighbors().size());
 
-            if (v.color == Color.YELLOW) {
-                //We now know we need to color the vertex. We'll loop over each color and check each neighbor for consistency. If the color is not consistent
-                //remove it from the available colros
-                for (int j = 0; j < 4; j++) {
-                    if (!isConsistent(v)) {
-                        v.removeColor(v.color);
-                    }
-
-                } 
-                // if all the colors are removed, we found a conflict and need to backtrack. Reset colors and try again.
-                if (v.colorsTried.isEmpty()) {
-                    int n = this.r.nextInt(v.getNeighbors().size());
-                    resetColors(edges);
-                    v.color = Color.YELLOW;
-                    v.getNeighbors().get(n).color = Color.YELLOW;
+            for (int j = 0; j < 4; j++) {
+                if (!isConsistent(v2.getNeighbors().get(neighbor))) {
+                    v2.getNeighbors().get(neighbor).removeColor(v2.getNeighbors().get(neighbor).color);
                 }
+
             }
+            // if all the colors are removed, we found a conflict and need to backtrack. Reset colors and try again.
+            if (v2.getNeighbors().get(neighbor).colorsTried.isEmpty()) {
+                resetColors(edges);
+                v1.color = Color.YELLOW;
+                v2.color = Color.YELLOW;
+                v2.getNeighbors().get(neighbor).color = Color.YELLOW;
+            }
+            // }
         }
+        //  }
         //return if a solution was found
-        return isGoal(v, edges);
+        return isGoal(v1, edges);
     }
+
     // set the vertex's available colors back to default
     public void resetColors(ArrayList<Vertex> edges) {
-        for(int i = 0; i < edges.size(); i++){
+        for (int i = 0; i < edges.size(); i++) {
             edges.get(i).resetColors();
         }
     }
+
     //for each color check neighbors and make sure they don't match
     public boolean isConsistent(Vertex v) {
         for (int i = 0; i < 4; i++) {
