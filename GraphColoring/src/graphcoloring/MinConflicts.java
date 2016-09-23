@@ -78,7 +78,6 @@ public class MinConflicts {
                 }
             }
         }
-        //System.out.println(conflictList.size());
         return conflicts;
     }
     
@@ -91,7 +90,6 @@ public class MinConflicts {
     public Vertex getRandomVertex(ArrayList<Vertex> list) {
         // generate a random integer for index based on remaining size of list
         int index = randomGenerator.nextInt(list.size());
-        // System.out.println(list.size());
         // remove a random vertex from the conflict list and return it
         Vertex selection = list.remove(index);
         return selection;

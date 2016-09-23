@@ -29,13 +29,13 @@ public class MAC {
         this.colors[3] = Color.black;
     }
 
-    public boolean solve(Vertex v1, Vertex v2, ArrayList<Vertex> edges) {
+    public boolean solve(Vertex v1, Vertex v2, ArrayList<Vertex> edges, int totalVert, int colorSize) {
 
         //We'll use a while loop instead of recursion to avoid stack overflow. Some of the paths can take a while to find a solution and recursion generally puts too much on the stack
         while (remainingVerticies(edges)) {
             // For the number of vertices, pick one, if it is yellow we need to color it.
             //TODO we hardcode the graph size now. We need to add user input later
-            v1 = edges.get(this.r.nextInt(100));
+            v1 = edges.get(this.r.nextInt(totalVert));
             //   for ( int k = 0; k < v1.getNeighbors().size(); k++){
             v2 = v1.getNeighbors().get(this.r.nextInt(v1.getNeighbors().size()));
             // if (v1.color == Color.YELLOW && v2.color == Color.YELLOW) {
@@ -43,8 +43,8 @@ public class MAC {
             //remove it from the available colros
             int neighbor = this.r.nextInt(v2.getNeighbors().size());
 
-            for (int j = 0; j < 4; j++) {
-                if (!isConsistent(v2.getNeighbors().get(neighbor))) {
+            for (int j = 0; j < colorSize; j++) {
+                if (!isConsistent(v2.getNeighbors().get(neighbor), colorSize)) {
                     v2.getNeighbors().get(neighbor).removeColor(v2.getNeighbors().get(neighbor).color);
                 }
 
@@ -71,8 +71,8 @@ public class MAC {
     }
 
     //for each color check neighbors and make sure they don't match
-    public boolean isConsistent(Vertex v) {
-        for (int i = 0; i < 4; i++) {
+    public boolean isConsistent(Vertex v, int colorSize) {
+        for (int i = 0; i < colorSize; i++) {
             for (int j = 0; j < v.getNeighbors().size(); j++) {
                 if (!isSafe(v, i)) {
                     return false;

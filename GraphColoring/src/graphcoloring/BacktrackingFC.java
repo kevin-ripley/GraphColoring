@@ -29,19 +29,19 @@ public class BacktrackingFC {
         this.colors[3] = Color.black;
     }
 
-    public boolean solve(Vertex v, ArrayList<Vertex> edges) {
+    public boolean solve(Vertex v, ArrayList<Vertex> edges, int totalVert, int colorSize) {
 
         //We'll use a while loop instead of recursion to avoid stack overflow. Some of the paths can take a while to find a solution and recursion generally puts too much on the stack
         while (remainingVerticies(edges)) {
             // For the number of vertices, pick one, if it is yellow we need to color it.
             //TODO we hardcode the graph size now. We need to add user input later
-            v = edges.get(this.r.nextInt(10));
+            v = edges.get(this.r.nextInt(totalVert));
 
             if (v.color == Color.YELLOW) {
                 //We now know we need to color the vertex. We'll loop over each color and check each neighbor for consistency. If the color is not consistent
                 //remove it from the available colros
-                for (int j = 0; j < 4; j++) {
-                    if (!isConsistent(v)) {
+                for (int j = 0; j < colorSize; j++) {
+                    if (!isConsistent(v, colorSize)) {
                         v.removeColor(v.color);
                     }
 
@@ -65,8 +65,8 @@ public class BacktrackingFC {
         }
     }
     //for each color check neighbors and make sure they don't match
-    public boolean isConsistent(Vertex v) {
-        for (int i = 0; i < 4; i++) {
+    public boolean isConsistent(Vertex v, int colorSize) {
+        for (int i = 0; i < colorSize; i++) {
             for (int j = 0; j < v.getNeighbors().size(); j++) {
                 if (!isSafe(v, i)) {
                     return false;

@@ -18,9 +18,15 @@ public class GraphGenerator extends JPanel {
 
     private ArrayList<Vertex> allPoints = new ArrayList<>();
     private ArrayList<Color> colorList = new ArrayList<>();
+    int totalVert = 0;
+    int colorSize = 3;
+    int graphType = 0;
 
-    public GraphGenerator(ArrayList<Color> colorList) {
+    public GraphGenerator(ArrayList<Color> colorList, int totalVert, int c, int g) {
         this.colorList = colorList;
+        this.totalVert = totalVert;
+        this.colorSize = c;
+        this.graphType = g;
     }
 
     @Override
@@ -30,7 +36,7 @@ public class GraphGenerator extends JPanel {
         ArrayList<Line2D> edges = new ArrayList<>();
         Graphics2D g2d = (Graphics2D) g;
         Color color;
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < this.totalVert; i++) {
             Dimension size = getSize();
             int w = size.width;
             int h = size.height;
@@ -39,16 +45,6 @@ public class GraphGenerator extends JPanel {
             int y = Math.abs(r.nextInt()) % h;
 
             Point2D p = new Point2D.Double((double) x, (double) y);
-
-            Random randomGenerator = new Random();
-            //  int index = randomGenerator.nextInt(colorList.size());
-//            if (x % 3 == 0) {
-//                color = Color.BLUE;
-//            } else if (x % 3 > 1) {
-//                color = Color.GREEN;
-//            } else {
-//                color = Color.RED;
-//            }
             Vertex v = new Vertex(p, Color.YELLOW);
             allPoints.add(v);
         }
@@ -118,19 +114,31 @@ public class GraphGenerator extends JPanel {
                 }
             }
         }
-        MAC mac = new MAC();
-        System.out.println(mac.solve(neighbors.get(0),neighbors.get(1), neighbors));
 
-//        SimpleBacktracking sb = new SimpleBacktracking();
-//        System.out.println(sb.solve(neighbors.get(0), neighbors));
-//          BacktrackingFC fc = new BacktrackingFC();
-//          System.out.println(fc.solve(neighbors.get(0), neighbors));
-//        GeneticAlgorithm ga = new GeneticAlgorithm(gaPopulation(10), colorList, 10000);
-//        System.out.println(ga.search());
-//        SimpleBacktracking sb = new SimpleBacktracking();
-//        sb.solve(neighbors);
-//        MinConflicts mc = new MinConflicts(neighbors, colorList, 100);
-//        System.out.println(mc.findSolution());
+        switch (this.graphType) {
+            case 0:
+                SimpleBacktracking sb = new SimpleBacktracking();
+                System.out.println(sb.solve(neighbors.get(0), neighbors, this.totalVert, this.colorSize));
+                break;
+            case 1:
+                BacktrackingFC fc = new BacktrackingFC();
+                System.out.println(fc.solve(neighbors.get(0), neighbors, this.totalVert, this.colorSize));
+                break;
+            case 2:
+                MAC mac = new MAC();
+                System.out.println(mac.solve(neighbors.get(0), neighbors.get(1), neighbors, this.totalVert, this.colorSize));
+                break;
+            case 3:
+                MinConflicts mc = new MinConflicts(neighbors, colorList, 100);
+                System.out.println(mc.findSolution());
+                break;
+            case 4:
+                GeneticAlgorithm ga = new GeneticAlgorithm(gaPopulation(10), colorList, 10000);
+                System.out.println(ga.search());
+                break;
+            default:
+                System.out.println("Error");
+        }
         paintLines(g2d, edges, neighbors);
 
     }

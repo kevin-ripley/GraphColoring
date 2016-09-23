@@ -29,23 +29,22 @@ public class SimpleBacktracking {
         this.colors[3] = Color.black;
     }
 
-    public boolean solve(Vertex v, ArrayList<Vertex> edges) {
-        boolean solution = true;
-
+    public boolean solve(Vertex v, ArrayList<Vertex> edges, int totalVert, int colorSize) {
         //We'll use a while loop instead of recursion to avoid stack overflow. Some of the paths can take a while to find a solution and recursion generally puts too much on the stack
         while (remainingVerticies(edges)) {
             // For the number of vertices, pick one, if it is yellow we need to color it.
             //TODO we hardcode the graph size now. We need to add user input later
-            v = edges.get(this.r.nextInt(10));
+            v = edges.get(this.r.nextInt(totalVert));
 
             if (v.color == Color.YELLOW) {
                 //We now know we need to color the vertex. We'll loop over each color and check if it is valid. If it is valid keep the color and break out of the loop.
                 //Yes I know using breaks is generally bad practice. Deal with it. :)
-                for (int j = 0; j < 4; j++) {
+                for (int j = 0; j < colorSize; j++) {
                     if (isSafe(v, j)) {
                         break;
                     } else {
                         // If the color was not valid we need to backtrack so set the neighbor to this vetice back to Yellow (or uncolored)
+                        v.color = Color.YELLOW;
                         v.getNeighbors().get(this.r.nextInt(v.getNeighbors().size())).color = Color.YELLOW;
                     }
                 }
