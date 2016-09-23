@@ -25,8 +25,8 @@ public class GeneticAlgorithm {
     private final ArrayList<Color> colorList;
     private int populationSize;
     private int max_attempts = 0;
-    private int mutateProb = 0;
-    private int tSize = 5;
+    private int mutateProb = 20;
+    private int tSize = 2;
     private Random selection = new Random();
  
     /**
@@ -78,7 +78,16 @@ public class GeneticAlgorithm {
             // reproduce selected participants
             if (isSolution(reproduce(parentA, parentB))) 
                 return true;
-//            removeLeastFit();
+            if (i > 0 && i % population.size() == 0)
+            {
+                // random new members are added to increase diversity
+                generatePopulation(10);
+                // old population die off and some children can reproduce
+                for (int j = 0; j < children.size()/2; j++) {
+                    population.remove(selection.nextInt(population.size()));
+                    population.add(children.remove(j));
+                }
+            }
         }
         child = getMostFit();
         return false;
@@ -97,8 +106,8 @@ public class GeneticAlgorithm {
         for (int i = 0; i < crossover; i++) {
             child.get(i).setColor(b.get(i).getColor());
         }
-        child = mutate(child, 9);
-        population.add(child);
+        child = mutate(child, mutateProb);
+        children.add(child);
 //        if (selection.nextInt(1) == 0)
 //            population.remove(a);
 //        else
@@ -187,7 +196,7 @@ public class GeneticAlgorithm {
                     count +=1;
             }
         }
-        return count;
+        return count * 5;
     }
     
     /**
