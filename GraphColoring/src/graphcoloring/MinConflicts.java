@@ -46,7 +46,7 @@ public class MinConflicts {
             attemptsUsed = i;
             if (getConflicts() == 0) {
                 solution = true;
-                break;
+                return true;
             }
             // sets the current vertex to a random conflicted vertex
             currentVert = getRandomVertex(conflictList);
@@ -72,13 +72,12 @@ public class MinConflicts {
                     conflicts += 1;
                     if (!conflictList.contains(graph.get(i))) {
                         conflictList.add(graph.get(i));
-                    } else {
-                        break;
                     }
                 }
             }
         }
         //System.out.println(conflictList.size());
+        System.out.println(conflicts);
         return conflicts;
     }
     

@@ -30,7 +30,7 @@ public class GraphGenerator extends JPanel {
         ArrayList<Line2D> edges = new ArrayList<>();
         Graphics2D g2d = (Graphics2D) g;
         Color color;
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 3; i++) {
             Dimension size = getSize();
             int w = size.width;
             int h = size.height;
@@ -127,19 +127,20 @@ public class GraphGenerator extends JPanel {
 
 //        SimpleBacktracking sb = new SimpleBacktracking();
 //        sb.solve(neighbors);
-//        paintLines(g2d, edges, neighbors);
-//        MinConflicts mc = new MinConflicts(neighbors, colorList, 1000);
-//        System.out.println(mc.findSolution());
-//        printNeighbors(neighbors);
 
+        colorGraph(neighbors);
+        MinConflicts mc = new MinConflicts(neighbors, colorList, 1000);
+        System.out.println(mc.findSolution());
 
-        GeneticAlgorithm ga = new GeneticAlgorithm(neighbors, 100, colorList, 1000000);
-        System.out.println(ga.search());
+        // color graph for GA and MC
+
+//        GeneticAlgorithm ga = new GeneticAlgorithm(neighbors, 100, colorList, 1000000);
+//        System.out.println(ga.search());
 
 //        SimpleBacktracking sb = new SimpleBacktracking();
 //        System.out.println(sb.solve(neighbors.get(0), neighbors));
 
-        paintLines(g2d, edges, ga.getGraph());
+        paintLines(g2d, edges, neighbors);
         
     }
 
@@ -196,5 +197,12 @@ public class GraphGenerator extends JPanel {
     
     public ArrayList<Color> getColors() {
         return colorList;
+    }
+    
+    private void colorGraph(ArrayList<Vertex> graph) {
+        Random r = new Random();
+        for (int i = 0; i < graph.size(); i++) {
+            graph.get(i).setColor(colorList.get(r.nextInt(colorList.size())));
+        }
     }
 }
