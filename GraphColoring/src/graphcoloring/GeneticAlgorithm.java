@@ -25,7 +25,8 @@ public class GeneticAlgorithm {
     private final ArrayList<Color> colorList;
     private int populationSize;
     private int max_attempts = 0;
-    private int mutateProb = 20;
+    private int mutateProb = 10;
+    private int crossoverProb = 10;
     private int tSize = 2;
     private Random selection = new Random();
  
@@ -76,18 +77,8 @@ public class GeneticAlgorithm {
             parentA = tournament(tSize);
             parentB = tournament(tSize);
             // reproduce selected participants
-            if (isSolution(reproduce(parentA, parentB))) 
+            if (reproduce(parentA, parentB))
                 return true;
-            if (i > 0 && i % population.size() == 0)
-            {
-                // random new members are added to increase diversity
-                generatePopulation(10);
-                // old population die off and some children can reproduce
-                for (int j = 0; j < children.size()/2; j++) {
-                    population.remove(selection.nextInt(population.size()));
-                    population.add(children.remove(j));
-                }
-            }
         }
         child = getMostFit();
         return false;
@@ -99,26 +90,41 @@ public class GeneticAlgorithm {
      * @param a parent a to be crossed
      * @param b parent b to be crossed
      */
-    private ArrayList<Vertex> reproduce(ArrayList<Vertex> a, ArrayList<Vertex> b) {
-        child = a;
-        int crossover = selection.nextInt(child.size());
-        // swaps the colors of the first half of vertices in A with those in B
-        for (int i = 0; i < crossover; i++) {
-            child.get(i).setColor(b.get(i).getColor());
+    private boolean reproduce(ArrayList<Vertex> a, ArrayList<Vertex> b) {
+        ArrayList<Vertex> childA = new ArrayList<>();
+        ArrayList<Vertex> childB = new ArrayList<>();
+        childA = a;
+        childB = b;
+        // crossover at each vetex with probability 1 in crossoverProb
+        for (int i = 0; i < a.size(); i++) {
+            if(selection.nextInt(crossoverProb) == 1)
+                childA.get(i).setColor(a.get(i).getColor());
         }
-        child = mutate(child, mutateProb);
-        children.add(child);
-//        if (selection.nextInt(1) == 0)
-//            population.remove(a);
-//        else
-//            population.remove(b);
-        return child;
+        // crossover at each vertex with probability 1 in crossoverProb
+        for (int i = 0; i < a.size(); i++) {
+            if(selection.nextInt(crossoverProb) == 1)
+                childB.get(i).setColor(b.get(i).getColor());
+        }
+        
+        childA = mutate(childA, mutateProb);
+        childB = mutate(childB, mutateProb);
+        if (isSolution(childA)) {
+            child = childA;
+            return true;
+        } else if (isSolution(childB)) {
+            child = childB;
+            return true;
+        } else {
+            population.add(replacementTournament(childA));
+            population.add(replacementTournament(childB));
+            return false;
+        }
     }
     
     /**
      * Tournament Method
      * 
-     * @return the more fit of two randomly selected graphs
+     * @return the more fit of tSize randomly selected graphs
      */
     private ArrayList<Vertex> tournament(int tSize) {
         ArrayList<Vertex> graphA = population.get(selection.nextInt(population.size()));
@@ -174,8 +180,10 @@ public class GeneticAlgorithm {
      */
     private ArrayList<Vertex> mutate(ArrayList<Vertex> child, int n) {
         Random ran = new Random();
-        if (ran.nextInt(n) == 0) {
-            child.get(ran.nextInt(child.size())).setColor(colorList.get(ran.nextInt(colorList.size())));
+        for (int i = 0; i < child.size(); i++) {
+            if (ran.nextInt(n) == 1) {
+               child.get(ran.nextInt(child.size())).setColor(colorList.get(ran.nextInt(colorList.size())));
+            }
         }
         return child;
     }
@@ -279,5 +287,16 @@ public class GeneticAlgorithm {
                 leastFit = population.get(i);
         }
         population.remove(leastFit);
+    }
+    
+    private ArrayList<Vertex> replacementTournament(ArrayList<Vertex> contender) {
+        ArrayList<Vertex> temp = population.get(selection.nextInt(population.size()));
+        if (getFitness(contender) > getFitness(temp)) {
+            population.remove(temp);
+            return contender;
+        } else {
+            population.remove(temp);
+            return temp;
+        }
     }
 }

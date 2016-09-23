@@ -63,7 +63,7 @@ public class MinConflicts {
      */
     public int getConflicts() {
         int conflicts = 0;
-        // remove all from conflict list as conflicts change (do they?)
+        // remove all from conflict list as conflicts change
         conflictList.clear();
         // evaluate each element of graph and move conflicted vertices to conflict list
         for (int i = 0; i < graph.size(); i++) {
@@ -91,7 +91,7 @@ public class MinConflicts {
         // generate a random integer for index based on remaining size of list
         int index = randomGenerator.nextInt(list.size());
         // remove a random vertex from the conflict list and return it
-        Vertex selection = list.remove(index);
+        Vertex selection = list.get(index);
         return selection;
     }
     
