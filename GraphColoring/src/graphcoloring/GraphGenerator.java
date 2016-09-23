@@ -130,12 +130,12 @@ public class GraphGenerator extends JPanel {
                 break;
             case 3:
                 colorGraph(neighbors);
-                MinConflicts mc = new MinConflicts(neighbors, colorList, 100);
+                MinConflicts mc = new MinConflicts(neighbors, colorList, 10000);
                 System.out.println(mc.findSolution());
                 break;
             case 4:
                 colorGraph(neighbors);
-                GeneticAlgorithm ga = new GeneticAlgorithm(neighbors, 10, colorList, 100000);
+                GeneticAlgorithm ga = new GeneticAlgorithm(neighbors, 1000, colorList, 100000);
                 System.out.println(ga.search());
                 neighbors = ga.getGraph();
                 break;

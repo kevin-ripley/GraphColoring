@@ -15,10 +15,11 @@ import java.util.Random;
  */
 public class GeneticAlgorithm {
     private ArrayList<ArrayList<Vertex>> population = new ArrayList<>();
+    private ArrayList<ArrayList<Vertex>> children = new ArrayList<>();
     private final ArrayList<Vertex> graph;
     private ArrayList<Vertex> child = new ArrayList<>();
     private final ArrayList<Color> colorList;
-    private final int populationSize;
+    private int populationSize;
     private int max_attempts = 0;
     private int mutateProb = 0;
     private Random selection = new Random();
@@ -49,12 +50,14 @@ public class GeneticAlgorithm {
         ArrayList<Vertex> parentB;
         for (int i = 0; i < max_attempts; i++) {
                     // select parents through a tournament
-                   parentA = tournament();
-                   parentB = tournament();
-                   // reproduce selected participants
-                   if (isSolution(reproduce(parentA, parentB))) 
-                       return true;
+            parentA = tournament();
+            parentB = tournament();
+            // reproduce selected participants
+            if (isSolution(reproduce(parentA, parentB))) 
+                return true;
+            removeLeastFit();
         }
+        child = getMostFit();
         return false;
     }
     /**
@@ -65,21 +68,19 @@ public class GeneticAlgorithm {
      * @param b parent b to be crossed
      */
     private ArrayList<Vertex> reproduce(ArrayList<Vertex> a, ArrayList<Vertex> b) {
-        ArrayList<Vertex> tempgraph = new ArrayList<>();
-        tempgraph = a;
-        int crossover = selection.nextInt(tempgraph.size());
+        child = a;
+        int crossover = selection.nextInt(child.size());
         // swaps the colors of the first half of vertices in A with those in B
         for (int i = 0; i < crossover; i++) {
-            tempgraph.get(i).setColor(b.get(i).getColor());
+            child.get(i).setColor(b.get(i).getColor());
         }
-        tempgraph = mutate(tempgraph, 9);
-        child = tempgraph;
-        population.add(tempgraph);
+        child = mutate(child, 9);
+        population.add(child);
 //        if (selection.nextInt(1) == 0)
 //            population.remove(a);
 //        else
 //            population.remove(b);
-        return tempgraph;
+        return child;
     }
     
     /**
@@ -213,5 +214,29 @@ public class GeneticAlgorithm {
      */
     public int getPopulationSize() {
         return populationSize;
+    }
+    
+    /**
+     * Get Most Fit Method
+     * 
+     * @return member of the population with the highest fitness
+     */
+    private ArrayList<Vertex> getMostFit() {
+        ArrayList<Vertex> mostFit = population.get(0);
+        for (int i = 0; i < population.size(); i++) {
+            if (getFitness(population.get(i)) > getFitness(mostFit))
+                mostFit = population.get(i);                
+        }
+        return mostFit;
+    }
+    
+    private void removeLeastFit() {
+        int leastIndex = 0;
+        ArrayList<Vertex> leastFit = population.get(0);
+        for (int i = 0; i < population.size(); i++) {
+            if (getFitness(population.get(i)) < getFitness(leastFit))
+                leastFit = population.get(i);
+        }
+        population.remove(leastFit);
     }
 }
