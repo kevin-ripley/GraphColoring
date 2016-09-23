@@ -52,7 +52,8 @@ public class GeneticAlgorithm {
                    parentA = tournament();
                    parentB = tournament();
                    // reproduce selected participants
-                   if (getFitness(reproduce(parentA, parentB)) == 0)
+                   reproduce(parentA, parentB);
+                   if (isSolution(child))
                        return true;
         }
         return false;
@@ -66,8 +67,10 @@ public class GeneticAlgorithm {
      */
     private ArrayList<Vertex> reproduce(ArrayList<Vertex> a, ArrayList<Vertex> b) {
         child = a;
+        
+        int crossover = selection.nextInt(child.size());
         // swaps the colors of the first half of vertices in A with those in B
-        for (int i = 0; i < a.size()/2; i++) {
+        for (int i = 0; i < crossover; i++) {
             child.get(i).setColor(b.get(i).getColor());
         }
         child = mutate(child, 19);
@@ -90,8 +93,8 @@ public class GeneticAlgorithm {
         graphB = population.get(selection.nextInt(population.size()));
         
         // get the fitness of each randomly selected graph and compare them
-        // a lower fitness score is better
-        if (getFitness(graphA) < getFitness(graphB))
+        // a higher fitness score is better
+        if (getFitness(graphA) > getFitness(graphB))
             return graphA;
         else
             return graphB;
@@ -130,14 +133,33 @@ public class GeneticAlgorithm {
         }
         return child;
     }
-    
+
     /**
-     * Evaluate Fitness Method
+     * Fitness Function
      * 
-     * @param graph a graph object to be evaluated for fitness
-     * @return integer representation of errors in graph.  Higher int count = less fit, 0 = solved.
+     * @param graph the graph to be evaluated for fitness
+     * @return integer value for graph fitness, a higher number is more fit
      */
     private int getFitness(ArrayList<Vertex> graph) {
+        int count = 0;
+        // iterate once per vertex in the graph -- OUTER LOOP
+        for (int i = 0; i < graph.size(); i++) {
+            // iterate once per neighbor of the vertex at i -- INNER LOOP
+            for (int j = 0; j < graph.get(i).getNeighbors().size(); j++) {
+                if (graph.get(i).getColor() != graph.get(i).getNeighbors().get(j).getColor())
+                    count +=1;
+            }
+        }
+        return count;
+    }
+    
+    /**
+     * Is Solution Method
+     * 
+     * @param graph a graph object to be evaluated for solution
+     * @return true if child is a solution
+     */
+    private boolean isSolution(ArrayList<Vertex> graph) {
         int count = 0;
         // iterate once per vertex in the graph -- OUTER LOOP
         for (int i = 0; i < graph.size(); i++) {
@@ -147,8 +169,13 @@ public class GeneticAlgorithm {
                     count +=1;
             }
         }
-        return count;
+        if (count == 0) {
+            return true;
+        }else{
+            return false;
+        }
     }
+
     
     /**
      * Get Graph Method

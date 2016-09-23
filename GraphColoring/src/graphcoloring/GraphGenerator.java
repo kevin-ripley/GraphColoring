@@ -30,7 +30,7 @@ public class GraphGenerator extends JPanel {
         ArrayList<Line2D> edges = new ArrayList<>();
         Graphics2D g2d = (Graphics2D) g;
         Color color;
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 10; i++) {
             Dimension size = getSize();
             int w = size.width;
             int h = size.height;
@@ -127,16 +127,19 @@ public class GraphGenerator extends JPanel {
 
 //        SimpleBacktracking sb = new SimpleBacktracking();
 //        sb.solve(neighbors);
-//        MinConflicts mc = new MinConflicts(neighbors, colorList, 100);
+//        paintLines(g2d, edges, neighbors);
+//        MinConflicts mc = new MinConflicts(neighbors, colorList, 1000);
 //        System.out.println(mc.findSolution());
+//        printNeighbors(neighbors);
 
-//        GeneticAlgorithm ga = new GeneticAlgorithm(neighbors, 10000, colorList, 10000000);
-//        System.out.println(ga.search());
+
+        GeneticAlgorithm ga = new GeneticAlgorithm(neighbors, 100, colorList, 1000000);
+        System.out.println(ga.search());
 
 //        SimpleBacktracking sb = new SimpleBacktracking();
 //        System.out.println(sb.solve(neighbors.get(0), neighbors));
 
-        paintLines(g2d, edges, neighbors);
+        paintLines(g2d, edges, ga.getGraph());
         
     }
 
