@@ -129,11 +129,13 @@ public class GraphGenerator extends JPanel {
                 System.out.println(mac.solve(neighbors.get(0), neighbors.get(1), neighbors, this.totalVert, this.colorSize));
                 break;
             case 3:
+                colorGraph(neighbors);
                 MinConflicts mc = new MinConflicts(neighbors, colorList, 100);
                 System.out.println(mc.findSolution());
                 break;
             case 4:
-                GeneticAlgorithm ga = new GeneticAlgorithm(gaPopulation(10), colorList, 10000);
+                colorGraph(neighbors);
+                GeneticAlgorithm ga = new GeneticAlgorithm(neighbors, 100, colorList, 10000);
                 System.out.println(ga.search());
                 break;
             default:
@@ -199,17 +201,10 @@ public class GraphGenerator extends JPanel {
         return colorList;
     }
 
-    // recolors graph to create an array population for the GA
-    public ArrayList<ArrayList<Vertex>> gaPopulation(int n) {
-        ArrayList<ArrayList<Vertex>> population = new ArrayList<>();
-        Random rGen = new Random();
-        for (int i = 0; i < n; i++) {
-            ArrayList<Vertex> tempGraph = allPoints;
-            for (int j = 0; j < allPoints.size(); j++) {
-                tempGraph.get(j).setColor(colorList.get(rGen.nextInt(colorList.size())));
-            }
-            population.add(tempGraph);
+    private void colorGraph(ArrayList<Vertex> graph) {
+        Random r = new Random();
+        for (int i = 0; i < graph.size(); i++) {
+            graph.get(i).setColor(colorList.get(r.nextInt(colorList.size())));
         }
-        return population;
     }
 }
