@@ -18,32 +18,39 @@ public class Vertex {
     boolean visited;
     ArrayList<Color> colorsTried = new ArrayList<>();
 
-    public Vertex(Point2D current, Color color) {
+    public Vertex(Point2D current, Color color, int size) {
         this.point = current;
         this.color = color;
         this.visited = false;
         this.colorsTried.add(Color.BLUE);
         this.colorsTried.add(Color.GREEN);
         this.colorsTried.add(Color.RED);
+        if (size == 4){
         this.colorsTried.add(Color.BLACK);
-
+        }
     }
 
-    public void resetColors() {
+    public void resetColors(int size) {
         colorsTried.clear();
         this.colorsTried.add(Color.BLUE);
         this.colorsTried.add(Color.GREEN);
         this.colorsTried.add(Color.RED);
-        this.colorsTried.add(Color.BLACK);
-
+        if (size == 4) {
+            this.colorsTried.add(Color.BLACK);
+        }
     }
 
     public void removeColor(Color color) {
-       this.colorsTried.remove(color);
+        this.colorsTried.remove(color);
+    }
+
+    public void addColor(Color color) {
+        this.colorsTried.add(color);
     }
 
     public Color getFCColor() {
         return this.colorsTried.get(r.nextInt(this.colorsTried.size()));
+
     }
 
     public void addNeighbor(Vertex n) {

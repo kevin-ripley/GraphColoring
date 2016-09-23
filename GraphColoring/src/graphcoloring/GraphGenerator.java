@@ -7,7 +7,10 @@ package graphcoloring;
 
 import java.awt.*;
 import java.awt.geom.*;
+import java.io.IOException;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JPanel;
 
 /**
@@ -18,6 +21,7 @@ public class GraphGenerator extends JPanel {
 
     private ArrayList<Vertex> allPoints = new ArrayList<>();
     private ArrayList<Color> colorList = new ArrayList<>();
+    Random r = new Random();
     int totalVert = 0;
     int colorSize = 3;
     int graphType = 0;
@@ -32,29 +36,35 @@ public class GraphGenerator extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-
+        ArrayList<ArrayList<Vertex>> list = new ArrayList<>();
         ArrayList<Line2D> edges = new ArrayList<>();
         Graphics2D g2d = (Graphics2D) g;
         Color color;
+            allPoints = generatePoints();
+            try {
+                connectLines(g2d, allPoints);
+            } catch (IOException ex) {
+                Logger.getLogger(GraphGenerator.class.getName()).log(Level.SEVERE, null, ex);
+            }
+    }
+
+    public ArrayList<Vertex> generatePoints() {
+        allPoints.clear();
         for (int i = 0; i < this.totalVert; i++) {
             Dimension size = getSize();
             int w = size.width;
             int h = size.height;
-            Random r = new Random();
-            int x = Math.abs(r.nextInt()) % w;
-            int y = Math.abs(r.nextInt()) % h;
+            int x = Math.abs(this.r.nextInt()) % w;
+            int y = Math.abs(this.r.nextInt()) % h;
 
             Point2D p = new Point2D.Double((double) x, (double) y);
-            Vertex v = new Vertex(p, Color.YELLOW);
+            Vertex v = new Vertex(p, Color.YELLOW, this.colorSize);
             allPoints.add(v);
         }
-
-        connectLines(g2d, allPoints);
-
-        //printNeighbors(allPoints);
+        return allPoints;
     }
 
-    public void connectLines(Graphics2D g2d, ArrayList<Vertex> neighbors) {
+    public ArrayList<Vertex> connectLines(Graphics2D g2d, ArrayList<Vertex> neighbors) throws IOException {
         ArrayList<Line2D> edges = new ArrayList<>();
         int vertIndex = 0;
         for (int i = 0; i < neighbors.size(); i++) {
@@ -84,10 +94,10 @@ public class GraphGenerator extends JPanel {
                 }
             }
         }
-        connectRemainingLines(g2d, neighbors, edges);
+        return connectRemainingLines(g2d, neighbors, edges);
     }
 
-    public void connectRemainingLines(Graphics2D g2d, ArrayList<Vertex> neighbors, ArrayList<Line2D> edges) {
+    public ArrayList<Vertex> connectRemainingLines(Graphics2D g2d, ArrayList<Vertex> neighbors, ArrayList<Line2D> edges) throws IOException {
 
         int vertIndex = 0;
         for (int i = 0; i < neighbors.size(); i++) {
@@ -114,7 +124,6 @@ public class GraphGenerator extends JPanel {
                 }
             }
         }
-
         switch (this.graphType) {
             case 0:
                 SimpleBacktracking sb = new SimpleBacktracking();
@@ -129,18 +138,21 @@ public class GraphGenerator extends JPanel {
                 System.out.println(mac.solve(neighbors.get(0), neighbors.get(1), neighbors, this.totalVert, this.colorSize));
                 break;
             case 3:
-                MinConflicts mc = new MinConflicts(neighbors, colorList, 100);
-                System.out.println(mc.findSolution());
+                colorGraph(neighbors, this.colorSize);
+                MinConflicts mc = new MinConflicts(neighbors, colorList, 10000);
+                System.out.println(mc.findSolution(this.colorSize));
                 break;
             case 4:
-                GeneticAlgorithm ga = new GeneticAlgorithm(gaPopulation(10), colorList, 10000);
+                colorGraph(neighbors, this.colorSize);
+                GeneticAlgorithm ga = new GeneticAlgorithm(neighbors, this.totalVert, colorList, 100000);
                 System.out.println(ga.search());
+                neighbors = ga.getGraph();
                 break;
             default:
                 System.out.println("Error");
         }
         paintLines(g2d, edges, neighbors);
-
+        return neighbors;
     }
 
     public void paintLines(Graphics2D g2d, ArrayList<Line2D> edges, ArrayList<Vertex> points) {
@@ -154,7 +166,7 @@ public class GraphGenerator extends JPanel {
             g2d.setColor(Color.BLACK);
             g2d.draw(edges.get(i));
         }
-
+        g2d.dispose();
     }
 
     public boolean xIntersect(Line2D line1, Line2D line2) {
@@ -184,7 +196,6 @@ public class GraphGenerator extends JPanel {
             for (int j = 0; j < n.get(i).getNeighbors().size(); j++) {
 
                 System.out.println(" " + n.get(i).getNeighbors().get(j).getPoint());
-                //System.out.println("The Color is: " + n.get(i).getNeighbors().);
 
             }
 
@@ -211,5 +222,13 @@ public class GraphGenerator extends JPanel {
             population.add(tempGraph);
         }
         return population;
+    }
+
+    private void colorGraph(ArrayList<Vertex> graph, int size) {
+        Random r = new Random();
+        for (int i = 0; i < graph.size(); i++) {
+            graph.get(i).setColor(colorList.get(this.r.nextInt(size)));
+
+        }
     }
 }

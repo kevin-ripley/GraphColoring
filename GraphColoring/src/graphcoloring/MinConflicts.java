@@ -11,10 +11,10 @@ import java.util.Random;
 
 /**
  *
- * @author bryan
+ * @author Bryan Downs
  */
 public class MinConflicts {
-    private ArrayList<Vertex> graph = new ArrayList<>();
+    private ArrayList<Vertex> graph;
     private ArrayList<Vertex> conflictList = new ArrayList<>();
     private ArrayList<Color> colorList = new ArrayList<>();
     private Random randomGenerator = new Random();
@@ -39,19 +39,19 @@ public class MinConflicts {
      * 
      * @return a boolean True if solution is found or False if not found
      */
-    public boolean findSolution() {
+    public boolean findSolution(int size) {
         Vertex currentVert;
         // searches for a solution until found or max_attempts reached
         for (int i = 0; i < max_attempts; i++) {
             attemptsUsed = i;
             if (getConflicts() == 0) {
-                solution = true;
-                break;
+                System.out.println(attemptsUsed);
+                return true;
             }
             // sets the current vertex to a random conflicted vertex
             currentVert = getRandomVertex(conflictList);
             // minimizes conflicts for the current vertex
-            minimizeConflicts(currentVert);
+            minimizeConflicts(currentVert,  size);
         }
         System.out.println(attemptsUsed);
         return solution;    // placeholder
@@ -61,7 +61,7 @@ public class MinConflicts {
      * 
      * @return the evaluated number of conflicts found in the graph
      */
-    public int getConflicts() {
+    private int getConflicts() {
         int conflicts = 0;
         // remove all from conflict list as conflicts change (do they?)
         conflictList.clear();
@@ -72,12 +72,11 @@ public class MinConflicts {
                     conflicts += 1;
                     if (!conflictList.contains(graph.get(i))) {
                         conflictList.add(graph.get(i));
-                    } else {
-                        break;
                     }
                 }
             }
         }
+
         return conflicts;
     }
     
@@ -87,9 +86,10 @@ public class MinConflicts {
      * @param list an ArrayList of vertices
      * @return a randomly selected vertex from the list passed in based on size
      */
-    public Vertex getRandomVertex(ArrayList<Vertex> list) {
+    private Vertex getRandomVertex(ArrayList<Vertex> list) {
         // generate a random integer for index based on remaining size of list
         int index = randomGenerator.nextInt(list.size());
+        // System.out.println(list.size());
         // remove a random vertex from the conflict list and return it
         Vertex selection = list.remove(index);
         return selection;
@@ -100,7 +100,7 @@ public class MinConflicts {
      * 
      * @param v a Vertex object to have conflicts minimized
      */
-    public void minimizeConflicts(Vertex v) {
+    private void minimizeConflicts(Vertex v, int size) {
         // minimize the conflicts for the vertex
         ArrayList<Vertex> neighbors = v.getNeighbors();
         // System.out.println(v.getNeighbors().size());
@@ -108,7 +108,7 @@ public class MinConflicts {
         Color minColor = v.getColor();
         // add all neighbors to temporary list
         // pick color that minimizes the color conflicts with neighbors
-        for (int i = 0; i < colorList.size(); i++) {
+        for (int i = 0; i < size; i++) {
             int count = 0; 
             v.setColor(colorList.get(i));
             for (int j = 0; j < neighbors.size(); j++) {
@@ -149,6 +149,10 @@ public class MinConflicts {
         return graph;
     }
     
+    /**
+     * Get Attempts Used Method
+     * @return number of conflict minimizations used in the attempt to solve the graph
+     */
     public int getAttemptsUsed() {
         return attemptsUsed;
     }

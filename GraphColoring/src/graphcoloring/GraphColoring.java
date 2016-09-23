@@ -20,6 +20,7 @@ public class GraphColoring {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        try{
         int verticies = 0;
         int colorSize = 0;
         int graphType = 0;
@@ -41,5 +42,10 @@ public class GraphColoring {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         frame.add(points);
+        } 
+        catch (Exception e) {
+            System.out.println(e);
+        }
+        
     }
 }
